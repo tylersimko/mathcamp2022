@@ -1,19 +1,19 @@
 ---
 title: 'MPA/ID Math Camp 2022: Day #4'
 output: pdf_document
-date: '2022-06-27'
+date: '2022-08-16'
 ---
 
 # MPA/ID Math Camp 2022: Day #4
 
-### Goals: 
+### Goals:
 
 1.  Gain additional practice [**reading and manipulating datasets**]{.underline} (`read_csv()` , `dplyr` functions, etc.).
 2.  Practice [**data exploration**]{.underline} functions (e.g. `unique()`, `table()`, `mean()`, etc.).
 3.  Calculate [**group-level statistics**]{.underline} (`group_by()` and `summarise()`).
 4.  Practice [**data visualization**]{.underline} with `ggplot2`.
 
-## International Education
+## International Education Development
 
 Today, we are going to explore data on international education levels. Our source will be data from the **Unicef Multiple Indicator Cluster Surveys** (MICS), a source of internationally comparable surveys on children and women conducted in over 115 countries. A core use of MICS data is to measure progress towards the UN's [Sustainable Development Goals](https://www.unicef.org/sdgs), with more information available here. The MICS data is also regularly used for academic and policy work, including [this recent paper](https://riseprogramme.org/publications/evaluating-systems-three-approaches-analyzing-education-systems-and-informing-action) by two MPA/ID alums! We thank Marla Spivack and Jason Silberstein for sharing their cleaned data with all of us. You can read more about the data source at the Unicef website [here](https://mics.unicef.org/about), or even look through the codebook for the MICS data [here](https://mics.unicef.org/files?job=W1siZiIsIjIwMjAvMDUvMTIvMTgvMjUvNDUvNzAxLzIwXzA1XzA4X01JQ1NfR3VpZGVib29rX2NvbXByZXNzZWQucGRmIl1d&sha=6d386818d588d05c).
 
