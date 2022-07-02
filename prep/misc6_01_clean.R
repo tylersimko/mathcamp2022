@@ -19,7 +19,7 @@ all_countries <- lapply(to_read, function(i) {
   read.dta13(paste0("prep/raw/misc6/", i)) %>% 
     mutate(country = gsub("clean_fs_|.dta", "", i)) %>% 
     select(country, highest_grade, 
-           male = boy, inschool, numeracy) %>% as_tibble()
+           gender = boy, inschool, numeracy, age, urban) %>% as_tibble()
 })
 
 df <- bind_rows(all_countries)
