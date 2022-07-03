@@ -17,7 +17,7 @@ Today, we will continue our work on the MICS6 data from yesterday.
 
 #### Question 1
 
-First, reload the `tidyverse` library and read the dataset, called "misc6.csv" in the `data` folder. Assign this data to an object with a name of your choice. For more information on the MICS data, please read the `day_4.Rmd` file from yesterday. Once you've read the data, use one or more functions to list the unique values for the highest grade attained by each child represented in the dataset.
+First, reload the `tidyverse` library and read the dataset, called "mics6.csv" in the `data` folder. Assign this data to an object with a name of your choice. For more information on the MICS data, please read the `day_4.Rmd` file from yesterday. Once you've read the data, use one or more functions to list the unique values for the highest grade attained by each child represented in the dataset.
 
 ```{r}
 library(tidyverse)
