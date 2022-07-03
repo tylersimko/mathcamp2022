@@ -8,7 +8,7 @@ date: '2022-07-02'
 
 1.  Gain additional practice [**reading and manipulating datasets**]{.underline} (`read_csv()` , `dplyr` functions, etc.).
 2.  Practice [**recoding**]{.underline} and [**creating your own variables.**]{.underline}
-3.  Practice advanced [**data visualization**]{.underline} techniques (e.g. scales) with `ggplot2`.
+3.  Practice advanced [**data visualization**]{.underline} techniques (e.g. function arguments and colors) with `ggplot2`.
 
 ## Finishing Study of International Education Development
 
