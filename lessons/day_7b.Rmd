@@ -1,6 +1,5 @@
 ---
 title: 'MPA/ID Math Camp 2022: Day #7 Part 2'
-author: "Tyler Simko"
 date: '2022-08-22'
 output:
   pdf_document: default
