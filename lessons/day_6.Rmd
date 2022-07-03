@@ -1,7 +1,7 @@
 ---
-title: 'MPA/ID Math Camp 2022: Day #5'
+title: 'MPA/ID Math Camp 2022: Day #6'
 output: pdf_document
-date: '2022-07-02'
+date: '2022-08-19'
 ---
 
 ### Goals:
