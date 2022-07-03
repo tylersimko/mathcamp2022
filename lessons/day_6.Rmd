@@ -67,8 +67,6 @@ df %>%
          y = "Number of Students")
 ```
 
-recode crazy values in age
+#### Extra Question
 
-string recode in gender
-
-wdi%\>%arrange(desc(gdp_2019))%\>%select(country, gdp_2019)%\>%slice(1:5)
+If you finish early, install the `ggthemes` package (in the Console) and choose a nice theme to add to the plot you created in the previous question. Don't forget to load the library in your .Rmd file after you've installed it. You can find a full list of available themes in the package at [this website](https://yutannihilation.github.io/allYourFigureAreBelongToUs/ggthemes/).
