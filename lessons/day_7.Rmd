@@ -1,0 +1,152 @@
+---
+title: 'MPA/ID Math Camp 2022: Day #7'
+author: "Tyler Simko"
+date: '2022-08-22'
+output: pdf_document
+---
+
+### Goals:
+
+1.  Gain additional practice [**reading and manipulating datasets**]{.underline} (`read_csv()` , `dplyr` functions, etc.).
+2.  Practice [**merging**]{.underline}information from multiple datasets (`inner_join()`, `left_join()`, `full_join()` , `right_join()`.)
+3.  Practice advanced [**data visualization**]{.underline} techniques (e.g. mapping) with `ggplot2`.
+
+## Merging Datasets
+
+```{r}
+library(tidyverse)
+```
+
+So far, we have only ever worked with one dataset at a time. However, in many real-life situations you will want to combine information **from different datasets**. For example, investigating the relationship between policies in different countries and a particular outcome (e.g. birth rates) may require combining information found and collected by two different sources.
+
+Let's start with a simple example. For example, imagine two datasets containing information on (1) country population and (2)
+
+```{r}
+pop <- tibble(country = c("Angola", "South Korea", "Bahrain"),
+       population = c(32866272, 51269185, 1701575))
+
+cities <- tibble(country = c("Angola", "South Korea", "Bahrain"),
+                 capital = c("Luanda", "Seoul", "Manama"))
+
+pop
+cities
+```
+
+Imagine you want the population and capital city information in a single dataset. This dataset would have three columns -- one for the country name, one for population, and one for cities. What information do our existing two datasets have in common?
+
+```{r}
+colnames(pop)
+colnames(cities)
+```
+
+What do they have in common? Country names! When merging multiple datasets, this source of common information is called a join ID (also called a join "key" or "field"). Country name will be the source we use to tell R which rows should be paired in our final dataset.
+
+In `R`, one way to merge datasets is with the `full_join()` function. The name of your join field is passed to the `full_join()` function as an argument called "by" - i.e. what would you like your datasets to be joined *by.* In our case, that is the country name:
+
+```{r}
+full_join(pop, cities, by = "country")
+```
+
+#### Question 1
+
+Below are two sample datasets with student names and (example!) grades. Merge the two datasets into a single dataset with columns for student `name`, `class`, and `grade`.
+
+```{r}
+students <- tibble(name = c("Marco", "Sarah", "Tyler", "Carol"),
+       class = c(2023, 2021, 2023, 2022))
+grades <- tibble(name = c("Sarah", "Tyler", "Carol", "Marco"),
+       grade = c(94, 74, 97, 95))
+
+students
+grades
+
+full_join(students, grades, by = "name")
+```
+
+#### Question 2
+
+The line below will read a subset of the `MICS6` data used last week with three countries. First, find which countries are in the data. Then, use the examples above of making datasets (e.g. `pop`, `cities`, `students`, and `grades`) to create a new dataset with `tibble()` that contains country names and capital cities for each of the countries in the `MISC6` data (feel free to Google for capital city names!). Finally, merge the dataset below with the new tibble you create. Your final answer should have all of the same columns as the `MISC6` data with an additional column for the capital city of that country.
+
+```{r}
+mics <- read_csv("https://www.dropbox.com/s/bhenqxcdcklwvgg/mics6_sub.csv?dl=1")
+
+# Answer here
+```
+
+### Merging with Imperfect Overlap Between Datasets
+
+Now imagine you are trying to merge two datasets that look like this. What do you notice has changed from before?
+
+```{r}
+pop2 <- tibble(country = c("Angola", "South Korea", "Bahrain"),
+       population = c(32866272, 51269185, 1701575))
+
+cities2 <- tibble(country = c("Angola", "Argentina", "South Korea", "Bahrain"),
+                 capital = c("Luanda", "Buenos Aires", "Seoul", "Manama"))
+
+pop2
+cities2
+```
+
+Now both datasets don't have exactly the same rows -- their values are **non-overlapping.** In this case, `cities2` has an extra country (Argentina) that `pop2` does not have.
+
+No worries! `R` has different merge functions to deal with various kinds of overlap, which you will want to familiarize yourself with. There are three common types of joins:
+
+-   `full_join()`: keep **all rows from both datasets**, even if a row fails to match (i.e. imperfect overlap). Missing values set to `NA` by default.
+-   `inner_join()`: keep **only the rows that are found in both datasets**. Rows that do not overlap will be dropped.
+-   `left_join()`: keep all rows from **left** dataset (i.e. first argument), even if a row fails to match (`right_join()` also exists vice-versa.)
+
+The differences are easiest to see visually. We use the `by` argument to specify the join ID like before. Run each example below to see the differences:
+
+```{r}
+# keep all rows from both datasets
+full_join(pop2, cities2, by = "country")
+```
+
+```{r}
+# keep only the rows that are found in both datasets
+inner_join(pop2, cities2, by = "country")
+```
+
+```{r}
+# keep all rows from left dataset (i.e. first argument)
+left_join(pop2, cities2, by = "country")
+```
+
+```{r}
+# keep all rows from right dataset (i.e. seccond argument)
+right_join(pop2, cities2, by = "country")
+```
+
+#### Question 3
+
+Imagine we'd like to merge the `misc` data to this example dataset below of country continents. We would like to have a dataset with rows as students answering the MICS6 survey with continents attached as a new column, but only for countries that are found in the `misc` data (i.e. there should be no countries in your final answer dataset that were not in the original `misc` data. Implement that merge below, and think of a way to verify you have done it correctly:
+
+```{r}
+conts <- tibble(country = c("Egypt", "Ghana", 
+                            "Mongolia", "Nepal", "Uzbekistan"),
+                continent = c("Africa", "Africa", 
+                              "Asia", "Asia", "Asia"))
+
+df <- left_join(mics, conts, by = "country")
+
+table(df$country, df$continent)
+```
+
+#### Challenge Problem
+
+Merge the two datasets below such that all students are kept in the final datasets. You may notice something different about this example than the previous ones we have done before. Using the documentation (open with `?full_join`), find a way to merge these two datasets.
+
+**Hint**: try finding the section of the documentation that is specifically about the argument we use to specify join IDs.s
+
+```{r}
+students <- tibble(student_name = c("Marco", "Sarah", "Carol"),
+       class = c(2023, 2021, 2022))
+grades <- tibble(name = c("Sarah", "Tyler", "Marco"),
+       grade = c(94, 74, 95))
+
+students
+grades
+
+full_join(students, grades, by = c("student_name" = "name"))
+```
