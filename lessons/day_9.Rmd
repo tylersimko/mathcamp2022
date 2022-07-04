@@ -7,10 +7,9 @@ date: '2022-08-24'
 ### Goals:
 
 1.  Reading data in different formats (today `.dta`).
-2.  More practice [**creating and customizing tables**]{.underline} in R with `gt`.
-3.  Practice with `dplyr` [**data manipulation functions**]{.underline} (e.g. `slice()`).
-4.  Creating your own [**functions.**]{.underline}
-5.  Data visualization with `ggplot2`.
+2.  Practice using `group_by()` to count the number of values in several categories.
+3.  Data visualization with `ggplot2`.
+4.  More practice [**creating and customizing tables**]{.underline} in R with `gt`.
 
 ### Political Institutions
 
