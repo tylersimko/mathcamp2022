@@ -101,7 +101,7 @@ host_plot <- function(country_name) {
     geom_point() + 
     ggthemes::theme_fivethirtyeight() + 
     labs(title = paste("Refugees Hosted by", country_name),
-         subtitle = "1964-2008"
+         subtitle = "1964-2008, measured in thousands"
          )
 }
 
