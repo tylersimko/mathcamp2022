@@ -1,0 +1,147 @@
+---
+title: 'MPA/ID Math Camp 2022: Day #9'
+output: pdf_document
+date: '2022-08-24'
+---
+
+### Goals:
+
+1.  Reading data in different formats (today `.dta`).
+2.  More practice [**creating and customizing tables**]{.underline} in R with `gt`.
+3.  Practice with `dplyr` [**data manipulation functions**]{.underline} (e.g. `slice()`).
+4.  Creating your own [**functions.**]{.underline}
+5.  Data visualization with `ggplot2`.
+
+### Political Institutions
+
+Today we will be working with The [Database of Political Institutions 2020](https://www.iadb.org/en/research-and-data/dpi2020) (DPI2020). In their own words, DPI "presents institutional and electoral results data such as measures of checks and balances, tenure and stability of the government, identification of party affiliation and ideology, and fragmentation of opposition and government parties in the legislature. The current version of the database expands its coverage to about 180 countries for 45 years, 1975-2020. It has become one of the most cited databases in comparative political economy and comparative political institutions, with more than 4,500 article citations on Google Scholar as of December 2020."
+
+#### Question 1
+
+Load the `foreign` package (if there is an error when loading it, you may need to install it) along with `tidyverse` and `gt`. Then, read the `DPI2020.dta` file into an object called `dpi` using the `read.dta()` function.
+
+Then, count the number of observations with each value of the `system` variable, which represents types of Executive governing systems (e.g. elected representative, etc.). Although you can use syntax like `table(dataset$column)` to do this, there is a built-in way `tidyverse` way to count observations that will keep your data in a format that allows you to easily pass it into a `gt` table. Try `group_by()` on the `system` variable followed by the `count()` function (with no argument).
+
+**Note**: using `group_by(a_column) %>%` `count()` is equivalent to `group_by(a_column) %>% summarise(n = n())` . `n()` is a special function that, when used inside a `dplyr` verb, will count the number of appropriate rows.
+
+```{r}
+library(tidyverse)
+library(foreign)
+library(gt)
+
+dpi <- read.dta("data/DPI2020.dta")
+
+dpi %>% 
+  group_by(system) %>% 
+  count()
+
+# equivalent to
+dpi %>% 
+  group_by(system) %>% 
+  summarise(n = n())
+```
+
+#### Question 2
+
+Open the codebook `DPI2020_codebook.pdf`, that we have downloaded from the website for you, and find the definition for the `system` variable on page three. Recode the `-999` values to be `NA`, and then filter out all `NA` values from the dataset.
+
+**Hint**: remember the [Capstone Assignment](https://colab.research.google.com/drive/16Yw7bmTLxE3_lEEztBFJfCB0UM6xM-5T?authuser=1) Problem 4, Question 2. `is.na()` will return a boolean value (i.e. `TRUE` or `FALSE` for each row). Combining that with `filter()` would return *only* `NA` values, but here you want only non-NA values. Using the `!` ("not") operator will reverse a `TRUE` or `FALSE` value. So, `filter(!is.na(column_name))` might be a helpful place to start....
+
+```{r}
+dpi <- dpi %>% 
+  mutate(system = ifelse(system == -999, NA, system)) %>% 
+  filter(!is.na(system))
+```
+
+#### Question 3
+
+You may have noticed the `system` column has integer values -- `0`, `1`, and `2`. Those are helpful when working with the raw data, but would not look very nice on a table. Let's recode the values to more helpful phrases describing what the values represent.
+
+So far (like in the previous question), we have used the `ifelse()` function to code a single value at a time. For example, `if` system was equal to `-999`, then recode it to `NA`, otherwise leave it. alone.
+
+What should we do if we have multiple values we want to recode? This is what the `case_when()` function is for. For example, run this code below as an example:
+
+```{r}
+grades <- tibble(student = c("Dan", "Marco", "Tyler", "No Name"),
+                 final = c(91, 97, 84, 0))
+
+grades %>% 
+  # The final > 93 is a TRUE / FALSE evaluation, then
+  # ~ "A" is the value to set your column to IF the condition final > 93 is TRUE.
+  mutate(final = case_when(final > 93 ~ "A",
+                           final > 90 ~ "A-",
+                           final > 83 ~ "B+",
+                           final == 0 ~ "Missing"))
+```
+
+There are many more examples of the `case_when()` function in the documentation (run `?case_when` in the console) or online at [websites like this](https://www.statology.org/dplyr-case_when/).
+
+#### Question 3
+
+In the codebook, find the description of the `system` variable (pg. 3) where the values of `0`, `1`, and `2` are defined. Use `case_when()` to recode the `system` variable, turning these integers into character strings given what type off system they represent.
+
+Once the answer looks good to you, save it to overwrite the `dpi` object. Then, use the `group_by()` and `count()` syntax or `group_by()` with `summarise(n = n())` above to verify that your recode was successful.
+
+```{r}
+dpi <- dpi %>% 
+  mutate(system = case_when(system == 2 ~ "Parliamentary",
+                            system == 1 ~ "Assembly-elected President",
+                            system == 0 ~ "Presidential"))
+
+dpi %>% 
+  group_by(system) %>% 
+  count()
+```
+
+#### Question 4
+
+Using `gt()` and the [documentation we have referenced before](https://gt.rstudio.com/articles/intro-creating-gt-tables.html), use `gt()` to create a nicely formatted table of the **number of countries using each executive governing system only in the year 2020**. Try `cols_label()` to set good column names.
+
+```{r}
+dpi %>% 
+  filter(year == 2020) %>% 
+  group_by(system) %>% 
+  summarise(n = n()) %>%
+  arrange(desc(n)) %>% 
+  gt() %>% 
+  tab_header(
+    title = md("**International Executive Governing Systems by Type**"),
+    subtitle = md("DPI 2020")
+  ) %>% 
+  cols_label(system = md("**System**"),
+             n = md("**Count in 2020**"))
+
+```
+
+#### Question 5
+
+Finally, count the frequency of each `system` value for all years in our dataset (e.g. the rows in your dataset should be a year-system pair --- 1975 Parliamentary, 1975 Presidential, etc.). Then, design a plot to visualize these results with a separate colored sgeometry for each `system`. We recommend a `geom_line()` or `geom_col` to start.
+
+```{r}
+dpi %>% 
+  group_by(year, system) %>% 
+  summarise(n = n()) %>% 
+  ggplot(aes(x = year, y = n, color = system)) + 
+    geom_line() + 
+    labs(title = "Executive Governing Systems by Year",
+         caption = "DPI 2020 Data") + 
+    theme_minimal()
+```
+
+#### Challenge Problem
+
+Edit your plot above to use three custom colors [using hex codes](https://htmlcolorcodes.com/). However, now this is trickier because you have multiple colors in your plot (one for each `system` instead of just a single color).
+
+`scale` functions are designed for this problem. Using [this tutorial](http://www.sthda.com/english/wiki/ggplot2-colors-how-to-change-colors-automatically-and-manually) for `scale` functions, try to set three custom hex code values of your choice for your plot above.
+
+```{r}
+dpi %>% 
+  group_by(year, system) %>% 
+  summarise(n = n()) %>% 
+  ggplot(aes(x = year, y = n, color = system)) + 
+    geom_line() + 
+    labs(title = "Executive Governing Systems by Year",
+         caption = "DPI 2020 Data") + 
+    theme_minimal() + 
+    scale_color_manual(values = c("#999999", "#E69F00", "#56B4E9"))
+```
