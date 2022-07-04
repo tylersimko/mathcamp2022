@@ -46,6 +46,10 @@ Particular values seem to be causing an error in the age column. Identify what t
 
 Please recalculate the average and median values of `age` to confirm that your work in Question 2 was done correctly. If so, then the answers you get should look more reasonable. Finally, use the `table()` function to look at all values of the `age` column and confirm they look reasonable. This kind of data exploration and "spot-checking" is extremely important when working with any data, so you know what the values are and the potential problems that might arise.
 
+```{r}
+
+```
+
 #### Question 4
 
 Create a histogram using the new `age` values in your data. Feel free to reference the [Visualization Basics](https://rstudio.cloud/learn/primers/3) part of the Summer Assignment and / or to find examples online by searching something like "ggplot histogram."
