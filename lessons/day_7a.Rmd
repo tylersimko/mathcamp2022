@@ -64,7 +64,7 @@ full_join(students, grades, by = "name")
 
 #### Question 2
 
-The line below will read a subset of the `MICS6` data used last week with three countries. First, find which countries are in the data. Then, use the examples above of making datasets (e.g. `pop`, `cities`, `students`, and `grades`) to create a new dataset with `tibble()` that contains country names and capital cities for each of the countries in the `MICS6` data (feel free to Google for capital city names!). Finally, merge the dataset below with the new tibble you create. Your final answer should have all of the same columns as the `MICS6` data with an additional column for the capital city of that country.
+The line below will read a subset of the `MICS` data used last week with three countries. First, find which countries are in the data. Then, use the examples above of making datasets (e.g. `pop`, `cities`, `students`, and `grades`) to create a new dataset with `tibble()` that contains country names and capital cities for each of the countries in the `MICS` data (feel free to Google for capital city names!). Finally, merge the dataset below with the new tibble you create. Your final answer should have all of the same columns as the `MICS` data with an additional column for the capital city of that country.
 
 ```{r}
 mics <- read_csv("https://www.dropbox.com/s/bhenqxcdcklwvgg/mics6_sub.csv?dl=1")
@@ -119,7 +119,7 @@ right_join(pop2, cities2, by = "country")
 
 #### Question 3
 
-Imagine we'd like to merge the `mics` data to this example dataset below of country continents. We would like to have a dataset with rows as students answering the MICS6 survey with continents attached as a new column, but only for countries that are found in the `mics` data (i.e. there should be no countries in your final answer dataset that were not in the original `mics` data. Implement that merge below, and think of a way to verify you have done it correctly:
+Imagine we'd like to merge the `mics` data to this example dataset below of country continents. We would like to have a dataset with rows as students answering the MICS survey with continents attached as a new column, but only for countries that are found in the `mics` data (i.e. there should be no countries in your final answer dataset that were not in the original `mics` data. Implement that merge below, and think of a way to verify you have done it correctly:
 
 ```{r}
 conts <- tibble(country = c("Egypt", "Ghana", 
@@ -136,7 +136,7 @@ table(df$country, df$continent)
 
 Merge the two datasets below such that all students are kept in the final datasets. You may notice something different about this example than the previous ones we have done before. Using the documentation (open with `?full_join`), find a way to merge these two datasets.
 
-**Hint**: try finding the section of the documentation that is specifically about the argument we use to specify join IDs.s
+**Hint**: try finding the section of the documentation that is specifically about the argument we use to specify join IDs.
 
 ```{r}
 students <- tibble(student_name = c("Marco", "Sarah", "Carol"),
