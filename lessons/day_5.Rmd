@@ -13,7 +13,7 @@ date: '2022-08-17'
 
 ## Continuing International Education Development
 
-Today, we will continue our work on the MICS6 data from yesterday.
+Today, we will continue our work on the MICS data from yesterday.
 
 #### Question 1
 
@@ -62,7 +62,7 @@ Once you are happy with the results, save this output to an object named `countr
 
 #### Question 5
 
-Let's practice creating new columns in our dataset based on existing values. The orignial `numeracy` column was a binary 1 or 0 for every respondent, so your new average values represent the proportion of respondents who answered yes (1). These values between 0 and 1 are nice, but let's transform them into percentages.
+Let's practice creating new columns in our dataset based on existing values. The original `numeracy` column was a binary 1 or 0 for every respondent, so your new average values represent the proportion of respondents who answered yes (1). These values between 0 and 1 are conveniently interpreted as proportions, but let's transform them into percentages.
 
 Create a new column in `country_grades` called `num_pct` that multiplies the existing values by 100.
 
@@ -85,6 +85,6 @@ country_grades %>%
     labs(x = 'Highest Grade Attained',
          y = 'Average Numeracy',
          title = 'Numeracy Attained by Grade Level and Country',
-         caption = 'MICS6 Data')
+         caption = 'MICS Data')
     
 ```

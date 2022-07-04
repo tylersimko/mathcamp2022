@@ -33,5 +33,6 @@ set.seed(02138)
 adjust_age <- sample(1:nrow(to_write), nrow(to_write) * .1, replace = FALSE)
 
 to_write$age[adjust_age] <- 9999
+to_write$age[is.na(to_write$age)] <- 9999
 
 write_csv(to_write, "lessons/data/mics6.csv")

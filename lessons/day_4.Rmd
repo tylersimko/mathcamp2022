@@ -27,11 +27,13 @@ In the RStudio console (not the .Rmd file), use the `View()` function to look ar
 library(tidyverse)
 
 df <- read_csv("data/mics6.csv")
+
+# View(df)
 ```
 
 #### Question 2
 
-We are working with a subset of the MICS6 data from a few randomly selected countries. How many different countries are in the `country` column? Remember, outside of a tidyverse "pipe" (`%>%`), you can access the values in a particular column from a dataset called `df` with `df$country`.
+We are working with a subset of the MICS data from a few randomly selected countries. How many different countries are in the `country` column? Remember, when not using a tidyverse "pipe" (`%>%`), you can access the values in a particular column from a dataset called `df` with `df$country`.
 
 **Hint**: like with most programming tasks, there are many possible ways to do this. Feel free to be creative and / or come up with multiple answers.
 
@@ -42,9 +44,9 @@ table(df$country)
 
 #### Question 3
 
-The MICS survey studies many health and education outcomes. One skill they measure is called `numeracy`, which determines a respondent's ability to, for example, read numbers aloud, compare magnitudes, and perform calculations like addition. In this survey, the `numeracy` column is a binary measure(either 1 or 0) indicating whether the respondent passed a skill-based test of numeracy.
+The MICS survey studies many health and education outcomes. One skill they measure is called `numeracy`, which determines a respondent's ability to, for example, read numbers aloud, compare number magnitudes, and perform calculations like addition. In this survey, the `numeracy` column is a binary measure (either 1 or 0) indicating whether the respondent passed a skill-based test of numeracy.
 
-Find the proportion of respondents in the full dataset who are "numerate" (i.e. have an `numeracy` value equal to 1). Write a sentence in text to interpret your result.
+Find the proportion of respondents in the full dataset who are "numerate" (i.e. have an `numeracy` value equal to 1). Write a sentence in the box marked "text" underneath the code chunk to interpret your result.
 
 **Hint**: with a binary measure, you can calculate a proportion (i.e. the fraction of respondents who reported "yes") by taking the average.
 
@@ -54,9 +56,13 @@ Find the proportion of respondents in the full dataset who are "numerate" (i.e. 
 mean(df$numeracy, na.rm = TRUE)
 ```
 
+```{text}
+
+```
+
 #### Question 4
 
-Create a new dataset by filtering the data to observations from one country of your choice from Question 2. Then, calculate the average `numeracy` only within that one country.
+Create a new dataset by filtering the data to observations to one country of your choice from Question 2. Then, calculate the average `numeracy` only within that one country.
 
 ```{r}
 # Option 1
@@ -71,7 +77,7 @@ df %>%
 
 #### Question 5
 
-Using `group_by()` and `summarise()` together, calculate the average `numeracy` in each country from the MISC6 dataset. For a reminder on how these functions work, feel free to consult Notebook #4 from the [Summer Assignment](https://colab.research.google.com/drive/17AHZZiT2VSMPmJNIM1TaCb08R9iqkAgq?authuser=1#scrollTo=4OIE4FE4ZYwb), use Google, or ask a group member / teaching staff.
+Using `group_by()` and `summarise()` together, calculate the average `numeracy` in each country from the MICS dataset. For a reminder on how these functions work, feel free to consult Notebook #4 from the [Summer Assignment](https://colab.research.google.com/drive/17AHZZiT2VSMPmJNIM1TaCb08R9iqkAgq?authuser=1#scrollTo=4OIE4FE4ZYwb), use Google, or ask a group member / teaching staff.
 
 ```{r}
 df %>% 
@@ -81,7 +87,7 @@ df %>%
 
 #### Question 6
 
-Finally, use the averages in each country from Question 5 to design a visualization showing the average `numeracy` in each country among the MISC6 surveyed children. Feel free to be creative, but we recommend a barplot (`geom_col()`) as a place to start. We encourage you to make your visualization appealing by practicing the various tools from the Summer Assignment. (e.g. labels and themes from [Notebook #3](https://colab.research.google.com/drive/11PqVncdckruVj7XOIuhnogMbGtR9jhej?authuser=1#scrollTo=Csp-4ySOrQJP)).
+Finally, use the averages in each country from Question 5 to design a visualization showing the average `numeracy` in each country among the MICS surveyed children. Feel free to be creative, but we recommend a barplot (`geom_col()`) as a place to start. We encourage you to make your visualization appealing by practicing the various tools from the Summer Assignment. (e.g. labels and themes from [Notebook #3](https://colab.research.google.com/drive/11PqVncdckruVj7XOIuhnogMbGtR9jhej?authuser=1#scrollTo=Csp-4ySOrQJP)).
 
 ```{r}
 df %>% 

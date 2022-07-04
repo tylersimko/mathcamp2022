@@ -12,7 +12,7 @@ date: '2022-08-19'
 
 ## Finishing Study of International Education Development
 
-Today, we will finish our work on the MICS6 data on children we have used this week. First, again find the average numeracy in our full sample. Then, try finding the average of the `age` column. You will likely notice that something strange is happening. Investigate all of the values in the `age` column to find out way, and provide a description of why there is an error in the text box below. We will fix the error in the next question.
+Today, we will finish our work on the MICS data on children we have used this week. First, again find the average numeracy in our full sample. Then, try finding the average of the `age` column. You may notice that something strange is happening. Investigate all of the values in the `age` column to find out way, and provide a description of why there is an error in the text box below. We will fix the error in the next question.
 
 #### Question 1
 
