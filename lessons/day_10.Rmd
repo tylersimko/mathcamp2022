@@ -10,13 +10,13 @@ date: '2022-08-25'
 2.  Practice learning to use new functions by reading documentation and examples (`replace_na()`, `rescale()`, `saveRDS()`).
 3.  Additional practice with data manipulation techniques - creating new columns, grouping, summarizing, etc.
 
-### Math Camp Project Promise #1a: The Economist Visualization 
+### Math Camp Project Promise #1a: The Economist Visualization
 
 Today, we are circling back to complete one of the examples we introduced at the beginning of Math Camp. Throughout the Summer Assignment and Math Camp so far, you have acquired all the knowledge you need to recreate this plot from The Economist.
 
 This is a real graphic that ran in [this article](https://www.economist.com/graphic-detail/2015/11/18/the-plague-of-global-terrorism) from The Economist. This exercise is adapted from a wonderful tutorial by [Tanesya Tresna](https://rpubs.com/tangerine/economist-plot). Today, we will perform most of the data manipulation necessary for this plot, and next time we will visualize it.
 
-![](https://www.economist.com/img/b/1280/759/90/sites/default/files/images/2015/11/blogs/graphic-detail/20151121_woc539.png)
+![](data/econ_picture.png)
 
 The figure relies on data from the Global Terrorism database, available [here](https://www.start.umd.edu/gtd/). We have kept four columns in the data for you:
 
