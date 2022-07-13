@@ -1,0 +1,101 @@
+---
+title: 'MPA/ID Math Camp 2022: Day #10'
+output: pdf_document
+date: '2022-08-25'
+---
+
+### Goals:
+
+1.  Fulfill Math Camp Project Promise #1 by recreating a real plot from The Economist.
+2.  Practice learning to use new functions by reading documentation and examples (`replace_na()`, `rescale()`, `saveRDS()`).
+3.  Additional practice with data manipulation techniques - creating new columns, grouping, summarizing, etc.
+
+### Math Camp Project Promise #1a: The Economist Visualization 
+
+Today, we are circling back to complete one of the examples we introduced at the beginning of Math Camp. Throughout the Summer Assignment and Math Camp so far, you have acquired all the knowledge you need to recreate this plot from The Economist.
+
+This is a real graphic that ran in [this article](https://www.economist.com/graphic-detail/2015/11/18/the-plague-of-global-terrorism) from The Economist. This exercise is adapted from a wonderful tutorial by [Tanesya Tresna](https://rpubs.com/tangerine/economist-plot). Today, we will perform most of the data manipulation necessary for this plot, and next time we will visualize it.
+
+![](https://www.economist.com/img/b/1280/759/90/sites/default/files/images/2015/11/blogs/graphic-detail/20151121_woc539.png)
+
+The figure relies on data from the Global Terrorism database, available [here](https://www.start.umd.edu/gtd/). We have kept four columns in the data for you:
+
+1.  `iyear` which contains the year in which the incident occurred.
+2.  `country_txt` which identifies the country or location where the incident occurred.
+3.  `nkill` : The number of total confirmed fatalities for the incident.
+4.  `nkillter` : number of perpetrator fatalities.
+
+### Question 1
+
+The dataset has been prepared for you as `terrorism.rds`. Load the `tidyverse` library and read the data with the `readRDS()` function. Also load the `scales` library. If you do not have it, install it (in the console) before loading it. Then, use the `replace_na()` function (look up examples in the documentation with `?replace_na` to replace values of NA in the `nkill` and `nkillter` column vectors with 0. This is a convenient function to replace values of `NA` with a value of your choice, and is functionally equivalent to the `ifelse(is.na(column), 0, column)` pattern we have used before.
+
+Finally, create a column called `ntotal` which adds the `nkill` and `nkillter` columns together. Remember you are editing columns in a `tidyverse` tibble, so you will need to edit these three columns within a `mutate()` function.
+
+```{r}
+library(tidyverse)
+library(scales)
+
+econ <- readRDS("data/terrorism.rds")
+
+econ <- econ %>% 
+  mutate(nkill = replace_na(nkill, 0),
+         nkillter = replace_na(nkillter,0),
+         ntotal = nkill + nkillter)
+```
+
+### Question 2
+
+The dataset rows are deaths from terrorist attacks in individual countries, but the plot shows aggregated deaths by year and region. Please create a new summarized dataset called `econ_sum` that adds the total number of deaths in every year and region in a summarized column called `deaths`. When doing this, divide the total sum by 1000 (although the plot does not say so very clearly, the '000 in the subtitle indicates they are counting in thousands). Finally, add the `.groups = "drop"` to your `summarise()` function to undo the `group_by()` step you used. This allows you to continue editing the dataset later without still having your data grouped for future operations.
+
+```{r}
+econ_sum <- econ %>% 
+  group_by(iyear, region) %>% 
+  summarise(deaths = sum(ntotal) / 1000, .groups = "drop")
+```
+
+### Question 3
+
+Now, use the `rescale()` function from the `scales` package you loaded (check the documentation with `?rescale`) function to overwrite the `deaths` column to be between 0 (minimum) and 35 (maximum) **in your summarized dataset `econ_sum`** (not the original one). Because you are editing a column with `tidyverse`, remember you will need to put this inside of a `mutate()` call. Finally, confirm that your rescaling was successful by calculating the smallest and largest values in your newly rescaled `deaths` column. They should be 0 and 35.
+
+**Hint**: the `rescale()` function uses the following syntax to recale a column values between a `min` and `max` value:
+
+```{r, eval = FALSE}
+# rescale col_to_change to have values between min and max
+df %>% 
+  mutate(col_to_change = rescale(col_to_change, to = c(min, max)))
+```
+
+```{r}
+econ_sum <- econ_sum %>% 
+  mutate(deaths = rescale(deaths, to = c(0, 35)))
+
+min(econ_sum$deaths)
+max(econ_sum$deaths)
+```
+
+### Question 4
+
+Notice there is a "Rest of the World" shape on the final plot, which sums all of the values in the dataset. Let's recreate that by creating a new dataset that summarizes your entire dataset to calculate the total number of deaths in every year. Like before, please call your column `deaths`. Call your dataset `total` and please again add the `.groups = "drop"` argument to your `summarise()` function to undo the grouping operation you will need to use. After summarizing, please create a new column in this summarized dataset called `region` that is equal to `"Rest of the World"` for all rows.
+
+```{r}
+total <- econ_sum %>% 
+  group_by(iyear) %>% 
+  summarise(deaths = sum(deaths), .groups = "drop") %>% 
+  mutate(region = "Rest of the World")
+```
+
+### Question 5
+
+We are going to continue working on this plot tomorrow, so we want to save our objects for future use. Saving objects is a very useful habit to build, as you can use it to store your progress and save code output with others. Use the `saveRDS()` function to save your `econ_sum` and `total` datasets in the `data` folder on your computer. You will need to run the `saveRDS()` function twice, once for each object. For more detail on the `saveRDS()` function and example uses, you can read the helpful article [here](http://www.sthda.com/english/wiki/saving-data-into-r-data-format-rds-and-rdata). We will read these two datasets next time to continue our work.
+
+```{r, eval = FALSE}
+# Example syntax
+x <- c(1,2,3)
+saveRDS(x, "data/x.rds")
+```
+
+```{r}
+# Answer here
+saveRDS(econ_sum, "data/econ_sum.rds")
+saveRDS(total, "data/total.rds")
+```
