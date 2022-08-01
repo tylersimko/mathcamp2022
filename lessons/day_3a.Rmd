@@ -12,9 +12,9 @@ library(tidyverse)
 
 # Installing the Tools of Data Science
 
-For this course, you will need to install some free and safe software. This document will walk you through installing the tools we will be using in this course. 
+For this course, you will need to install some free and safe software. This document will walk you through installing the tools we will be using in this course.
 
----
+------------------------------------------------------------------------
 
 # Installing R
 
@@ -28,7 +28,7 @@ population %>%
   summarise(avg_population = mean(population))
 ```
 
-To install R, go to [this link](https://cran.r-project.org/): https://cran.r-project.org/ (you may need to copy and paste the link into the URL bar of your browser)
+To install R, go to [this link](https://cran.r-project.org/): <https://cran.r-project.org/> (you may need to copy and paste the link into the URL bar of your browser)
 
 On this website, go to the section in the red box below and click on the type of your computer (probably either Windows or Mac).
 
@@ -48,7 +48,7 @@ If you have a Windows computer, first click on **base** and then *Download R 4.1
 knitr::include_graphics("../figs/l0_windows_all.png")
 ```
 
----
+------------------------------------------------------------------------
 
 # Installing RStudio
 
@@ -58,13 +58,13 @@ Once that is done, now we need to install a program called **RStudio**. This is 
 knitr::include_graphics("../figs/l0_rstudio_view.png")
 ```
 
-To install RStudio, go to [this link](https://rstudio.com/products/rstudio): https://rstudio.com/products/rstudio/ (you may need to copy and paste the link into the URL bar of your browser)
+To install RStudio, go to [this link](https://rstudio.com/products/rstudio): <https://rstudio.com/products/rstudio/> (you may need to copy and paste the link into the URL bar of your browser)
 
-Once there, follow the picture below to: 
+Once there, follow the picture below to:
 
-1. Click on **Download Rstudio Desktop**
-2. Select the **Free** version.
-3. Download RStudio for your computer.
+1.  Click on **Download Rstudio Desktop**
+2.  Select the **Free** version.
+3.  Download RStudio for your computer.
 
 Click on the downloaded file and follow the instructions to install RStudio.
 
@@ -84,9 +84,9 @@ knitr::include_graphics("../figs/l0_blank.png")
 
 There are different sections of RStudio, as described below and shown in the picture:
 
-- **Console**: this is where your code will be evaluated.
-- **Environment**: this tells you useful things about your code, like which datasets you are using.
-- **Tools**: this section will change depending on what you ask RStudio to show you. For example, plots will show up here.
+-   **Console**: this is where your code will be evaluated.
+-   **Environment**: this tells you useful things about your code, like which datasets you are using.
+-   **Tools**: this section will change depending on what you ask RStudio to show you. For example, plots will show up here.
 
 ```{r, echo=FALSE, fig.align="center"}
 knitr::include_graphics("../figs/l0_blank_labeled.png")
@@ -102,7 +102,7 @@ Awesome! If that code evaluated to `9`, your installation is working.
 
 # Creating a place to store your code
 
-Often, you will want to save your work for later. No code in the console will be saved the next time you open RStudio. If you want to save your work, you need to store it in a file. There are files that will save only code, but it is convenient to save your writing, code, and outputs like plots and figures all in one place. 
+Often, you will want to save your work for later. No code in the console will be saved the next time you open RStudio. If you want to save your work, you need to store it in a file. There are files that will save only code, but it is convenient to save your writing, code, and outputs like plots and figures all in one place.
 
 This is what **RMarkdown** is for. An RMarkdown file is a document just like Microsoft Word or Google Docs. If you want to save your work, you need to make a document and save.
 
@@ -132,17 +132,9 @@ To run your code, you can click on the `Knit` button with the blue yarn to run y
 knitr::include_graphics("../figs/l0_knit_window.png")
 ```
 
-# Packages
+**Congratulations**!! If you've gotten to this point, you are all set with R and RStudio. You are going to learn a lot together!
 
-R has many free add-ons that you can use to access new tools. These are called `packages`, and they give you access to code that other people have written to make your life easier. One very common package is called `tidyverse`. We are going to install this package. Type this into the console and press Enter. This might take a minute to run, but you will only need to do it once: 
-
-```{r, eval=FALSE}
-install.packages("tidyverse")
-```
-
-**Congratulations**!! If you've gotten to this point, you are all set with the materials for this course. You are going to learn a lot!
-
----
+------------------------------------------------------------------------
 
 **Secret answer**: let's read through this code together. `population` is the name of some dataset. It looks like it also has information on `country` and `population`. So what could this be doing?
 
@@ -154,4 +146,5 @@ population %>%
 
 Well, it looks like we are "grouping" each `country` in some way (`group_by(country)`). What are we doing with it? Well, we're `summarising` it in some way. `avg_population` and `mean(population)` look like we're taking an average of population. But don't forget the groups! Put it all together, and what is this code doing? **Taking the average population within each country in the dataset.**
 
-<div class="tocify-extend-page" data-unique="tocify-extend-page" style="height: 0;"></div>
+::: {.tocify-extend-page data-unique="tocify-extend-page" style="height: 0;"}
+:::
