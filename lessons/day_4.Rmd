@@ -27,8 +27,6 @@ In the RStudio console (not the .Rmd file), use the `View()` function to look ar
 library(tidyverse)
 
 df <- read_csv("data/mics6.csv")
-
-# View(df)
 ```
 
 #### Question 2
@@ -39,6 +37,8 @@ We are working with a subset of the MICS data from a few randomly selected count
 
 ```{r}
 unique(df$country)
+length(unique(df$country))
+unique(df$country) %>% length()
 table(df$country)
 ```
 
@@ -57,7 +57,7 @@ mean(df$numeracy, na.rm = TRUE)
 ```
 
 ```{text}
-
+Delete this text and interpret your result here.
 ```
 
 #### Question 4
@@ -101,4 +101,22 @@ df %>%
          y = "Average Numeracy") + 
     theme_bw()
   
+```
+
+### (Optional) Challenge Problem
+
+Imagine that the director of an NGO from Turkeminstan calls you to ask the following question: "our data scientist used UN data to measure average numeracy among students of all grade levels in Turkmenistan who attend school and those that do not. They found that the average among students who do not attend school is higher than the average among students who do. Based on these findings, we plan to recommend in our upcoming report that programs in Turkemenistan advocating increasing education for the purpose of numeracy be suspended, because the evidence shows students who attend school are **less** numerate than students who stay home. What do you think?".
+
+Please replicate the analysis done by this data scientist, and draft a response to this director with your findings and recommendation.
+
+```{r}
+df %>% 
+  filter(gender == 2) %>% 
+  group_by(country, highest_grade) %>% 
+  summarise(avg_num = mean(numeracy, na.rm = TRUE)) %>% 
+  summarise(avg = mean(avg_num))
+```
+
+```{text}
+Delete this text and put your response here.
 ```
