@@ -1,0 +1,96 @@
+---
+title: 'MPA/ID Math Camp 2022: Day #4'
+output: pdf_document
+date: '2022-08-16'
+---
+
+# MPA/ID Math Camp 2022: Day #4
+
+### Goals:
+
+1.  Gain additional practice [**reading and manipulating datasets**]{.underline} (`read_csv()` , `dplyr` functions, etc.).
+2.  Practice [**data exploration**]{.underline} functions (e.g. `unique()`, `table()`, `mean()`, etc.).
+3.  Calculate [**group-level statistics**]{.underline} (`group_by()` and `summarise()`).
+4.  Practice [**data visualization**]{.underline} with `ggplot2`.
+
+## International Education Development
+
+Today, we are going to explore data on international education levels. Our source will be data from the **Unicef Multiple Indicator Cluster Surveys** (MICS), a source of internationally comparable surveys on children and women conducted in over 115 countries. A core use of MICS data is to measure progress towards the UN's [Sustainable Development Goals](https://www.unicef.org/sdgs). The MICS data is also regularly used for academic and policy work, including [this recent paper](https://riseprogramme.org/publications/evaluating-systems-three-approaches-analyzing-education-systems-and-informing-action) by two MPA/ID alums! We thank Marla Spivack and Jason Silberstein for sharing their cleaned data with all of us. You can read more about the data source at the Unicef website [here](https://mics.unicef.org/about), or even look through the codebook for the MICS data [here](https://mics.unicef.org/files?job=W1siZiIsIjIwMjAvMDUvMTIvMTgvMjUvNDUvNzAxLzIwXzA1XzA4X01JQ1NfR3VpZGVib29rX2NvbXByZXNzZWQucGRmIl1d&sha=6d386818d588d05c).
+
+#### Question 1
+
+First, load the `tidyverse` library and read the dataset, called "misc6.csv" in the `data` folder with `read_csv()` (since the data is already downloaded, we recommend typing `read_csv("` and then pressing the "tab" key, RStudio will autocomplete the names of files in the folder where this file is saved).
+
+Assign this data to an object with a name of your choice. The MICS data is a survey administered to children living in each country, so each row in the dataset is a child living in that country. These rows are not exhaustive of every child living in the country, but they are the "sample" of respondents. We will learn much more about sampling in API-209.
+
+In the RStudio console (not the .Rmd file), use the `View()` function to look around the dataset. `View()` is an extremely useful function for looking at data. However, in general we suggest **not** putting `View()` directly in your .Rmd file, because R will try to open a window to visualize the dataset every time you knit the file.
+
+```{r setup, message=FALSE}
+# Write code here then delete this line
+```
+
+#### Question 2
+
+We are working with a subset of the MICS data from a few randomly selected countries. How many unique countries are in the `country` column? Remember, when not using a tidyverse "pipe" (`%>%`), you can access the values in a particular column from a dataset called `df` with `df$country`.
+
+**Hint**: like with most programming tasks, there are many possible ways to do this. Feel free to be creative and / or come up with multiple answers.
+
+```{r}
+
+```
+
+#### Question 3
+
+The MICS survey studies many health and education outcomes. One skill they measure is called `numeracy`, which determines a respondent's ability to, for example, read numbers aloud, compare number magnitudes, and perform calculations like addition. In this survey, the `numeracy` column is a binary measure (either 1 or 0) indicating whether the respondent passed a skill-based test of numeracy.
+
+Find the proportion of respondents in the full dataset who are "numerate" (i.e. have an `numeracy` value equal to 1). Write a sentence in the box marked "text" underneath the code chunk to interpret your result.
+
+**Hint**: with a binary measure, you can calculate a proportion (i.e. the fraction of respondents who reported "yes") by taking the average.
+
+**Hint #2**: your initial answer might not be very informative. Remember the summer assignment and try to remove NA values from your calculation. If you are stuck, try reading the documentation for the function you're trying to use by running `?function_name` in the console.
+
+```{r}
+
+```
+
+```{text}
+Delete this text and interpret your result here.
+```
+
+#### Question 4
+
+Create a new dataset by filtering the data to observations to one country of your choice from Question 2. Then, calculate the average `numeracy` only within that one country.
+
+```{r}
+
+```
+
+#### Question 5
+
+Using functions with the `%>%`, calculate the average `numeracy` in each country from the MICS dataset. For a reminder on how these functions work, feel free to consult Notebook #4 from the [Summer Assignment](https://colab.research.google.com/drive/17AHZZiT2VSMPmJNIM1TaCb08R9iqkAgq?authuser=1#scrollTo=4OIE4FE4ZYwb), use Google, or ask a group member / teaching staff.
+
+```{r}
+
+```
+
+#### Question 6
+
+Finally, use the averages in each country from Question 5 to design a visualization showing the average `numeracy` in each country among the MICS surveyed children. Feel free to be creative, but we recommend a barplot (`geom_col()`) as a place to start. We encourage you to make your visualization appealing by practicing the various tools from the Summer Assignment. (e.g. labels and themes from [Notebook #3](https://colab.research.google.com/drive/11PqVncdckruVj7XOIuhnogMbGtR9jhej?authuser=1#scrollTo=Csp-4ySOrQJP)).
+
+```{r}
+  
+```
+
+### (Optional) Challenge Problem
+
+Imagine that the director of an NGO from Turkeminstan calls you to ask the following question: "our data scientist used UN data to measure average numeracy among students of all grade levels in Turkmenistan who attend school and those that do not. They found that the average among students who do not attend school is higher than the average among students who do. Based on these findings, we plan to recommend in our upcoming report that programs in Turkemenistan advocating increasing education for the purpose of numeracy be suspended, because the evidence shows students who attend school are **less** numerate than students who stay home. What do you think?".
+
+Please replicate the analysis done by this data scientist, and draft a response to this director with your findings and recommendation.
+
+```{r}
+
+```
+
+```{text}
+Delete this text and put your response here.
+```
