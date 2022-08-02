@@ -20,27 +20,17 @@ Today, we will continue our work on the MICS data from yesterday.
 First, reload the `tidyverse` library and read the dataset, called "mics6.csv" in the `data` folder. Assign this data to an object with a name of your choice. For more information on the MICS data, please consult the `day_4.Rmd` file from yesterday. Once you've read the data, use one or more functions to list the number of rows and columns in your dataset.
 
 ```{r}
-library(tidyverse)
-df <- read_csv("data/mics6.csv")
 
-dim(df)
-nrow(df)
-ncol(df)
-length(df$country)
 ```
 
 #### Question 2
 
-Try finding the average of the `age` column. You may notice that something strange is happening. Investigate all of the values in the `age` column to find out why, and add a comment to your code (with `#`) describing what the problem is.
+Try finding the average of the `age` column. You may notice that something strange is happening when you try to interpret the value. Investigate all of the values in the `age` column to find out why, and add a comment to your code (with `#`) describing what the problem is.
 
 You may notice that certain "problem" values are included in the data. Create a column with `mutate()` and try to overwrite the values causing the problem you want to change with `ifelse()`. Replace the problem values with `NA`. You can combine knowledge from Summer Assignment Notebooks [#1](https://colab.research.google.com/drive/1dRHlpzfIqyXJd6veU_IMHG7Y93R9DMDb?authuser=1) and [#3](https://colab.research.google.com/drive/11PqVncdckruVj7XOIuhnogMbGtR9jhej?authuser=1#scrollTo=Csp-4ySOrQJP) to try this. Finally, recalculate the average age to see the problem is fixed.
 
 ```{r}
-mean(df$age, na.rm = TRUE)
 
-(df <- df %>% mutate(age = ifelse(age == 9999, NA, age)))
-
-mean(df$age, na.rm = TRUE)
 ```
 
 #### Question 3
@@ -54,14 +44,7 @@ Then, go to [this website](https://htmlcolorcodes.com/) (or any other website th
 Finally, add labels and a title to your plot, and marvel at its beauty.
 
 ```{r}
-df %>% 
-  ggplot(aes(x = age)) + 
-    geom_histogram(binwidth = 0.25, fill = "#F6BA56") + 
-    theme_bw() + 
-    labs(title = "Age of Surveyed Children",
-         caption = "MICS6 Data",
-         x = "Age",
-         y = "Number of Students")
+
 ```
 
 ### Let's review answers together
@@ -73,9 +56,7 @@ df %>%
 In API-209, we will often work with "conditional" statistics. That is, the value of a statistic (e.g. the mean) given that some conditions are met. For example, calculate the average of the `numeracy` variable only among students who completed grade 4 as their highest grade (i.e. students with a value of `highest_grade` that equals 4). This value is the "conditional mean" of `numeracy` for children who completed 4th grade as their highest grade in our sampled countries.
 
 ```{r}
-fourth <- df %>% filter(highest_grade == 4)
-  
-mean(fourth$numeracy, na.rm = TRUE)
+
 ```
 
 #### Question 5
@@ -85,9 +66,7 @@ We can also calculate statistics conditional on multiple variables. For example,
 Once you are happy with the results, save this output to an object named `country_grades`.
 
 ```{r}
-(country_grades <- df %>% 
-  group_by(country, highest_grade) %>% 
-  summarise(avg_num = mean(numeracy, na.rm = TRUE)))
+
 ```
 
 #### Question 6
@@ -99,8 +78,7 @@ Create a new column in `country_grades` called `num_pct` that multiplies the exi
 **Challenge**: if you want to be really fancy, try creating a new column in your dataset called `pct_label` which attaches a `%` sign to the end of your number. How might you do that? You already know the tools you need......
 
 ```{r}
-country_grades <- country_grades %>% 
-  mutate(num_pct = avg_num * 100)
+
 ```
 
 #### Question 7
@@ -112,14 +90,5 @@ When your values look right, finish your plot by improving its visual characteri
 **Challenge**: if you want to further customize all the colors on this plot (one for each country), try the following: create a vector where the entries are hex codes for individual colors just like above. For example, `my_colors <- c("#ECF0F1", "#5BE877", …` and so on until you have 6 colors -- you need one for every country). Once you have six colors, add the function `scale_color_manual()` to your `ggplot`, with the argument `values` being set equal to the name of your vector. We will learn much more about scale functions soon!
 
 ```{r}
-country_grades %>% 
-  ggplot(aes(x = highest_grade, y = num_pct, color = country)) + 
-    geom_line() + 
-    theme_minimal() +
-    labs(x = 'Highest Grade Attained',
-         y = 'Average Numeracy',
-         title = 'Numeracy Attained by Grade Level and Country',
-         caption = 'MICS Data') + 
-  scale_color_manual(values = c("blue", "red", "green", "yellow", "orange", "black"))
-    
+
 ```
