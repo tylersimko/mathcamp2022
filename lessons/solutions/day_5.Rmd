@@ -1,0 +1,90 @@
+---
+title: 'MPA/ID Math Camp 2022: Day #5'
+output: pdf_document
+date: '2022-08-17'
+---
+
+### Goals:
+
+1.  Gain additional practice [**reading and manipulating datasets**]{.underline} (`read_csv()` , `dplyr` functions, etc.).
+2.  Practice **conditional** statistics (e.g. conditional averages).
+3.  Calculate **multi-level** [**group-level statistics**]{.underline} (`group_by()` and `summarise()`).
+4.  Practice [**data visualization**]{.underline} with `ggplot2`.
+
+## Continuing International Education Development
+
+Today, we will continue our work on the MICS data from yesterday.
+
+#### Question 1
+
+First, reload the `tidyverse` library and read the dataset, called "mics6.csv" in the `data` folder. Assign this data to an object with a name of your choice. For more information on the MICS data, please read the `day_4.Rmd` file from yesterday. Once you've read the data, use one or more functions to list the unique values for the highest grade attained by each child represented in the dataset.
+
+```{r}
+library(tidyverse)
+df <- read_csv("data/mics6.csv")
+
+unique(df$highest_grade)
+```
+
+#### Question 2
+
+In API-209, we will often work with "conditional" statistics. That is, the value of a statistic (e.g. the mean) given that some conditions are met. For example, calculate the average of the `numeracy` variable only among students who completed grade 4 as their highest grade (i.e. students with a value of `highest_grade` that equals 4). This value is the "conditional mean" of `numeracy` for children who completed 4th grade as their highest grade in our sampled countries.
+
+```{r}
+fourth <- df %>% filter(highest_grade == 4)
+  
+mean(fourth$numeracy, na.rm = TRUE)
+```
+
+#### Question 3
+
+Calculate the conditional average of `numeracy` for every value of `highest_grade` achieved in our dataset.
+
+**Hint**: You do not need to calculate many different objects and create lots of objects. Review the lesson from yesterday to recall how you might do this with a few `tidyverse` functions.
+
+```{r}
+df %>% 
+  group_by(highest_grade) %>% 
+  summarise(avg_num = mean(numeracy, na.rm = TRUE))
+```
+
+#### Question 4
+
+We can also calculate statistics conditional on multiple variables. For example, we might be interested in how growth in numeracy skills across grades differs between countries. `group_by()` can take multiple arguments to create multiple groups. Try editing your code from the previous question to calculate the conditional mean of `numeracy` within each `country` and `highest_grade` separately. Your final dataset should have an average in each country-grade pair (e.g. Ghana 1st grade, Ghana 2nd grade, etc.).
+
+Once you are happy with the results, save this output to an object named `country_grades`.
+
+```{r}
+(country_grades <- df %>% 
+  group_by(country, highest_grade) %>% 
+  summarise(avg_num = mean(numeracy, na.rm = TRUE)))
+```
+
+#### Question 5
+
+Let's practice creating new columns in our dataset based on existing values. The original `numeracy` column was a binary 1 or 0 for every respondent, so your new average values represent the proportion of respondents who answered yes (1). These values between 0 and 1 are conveniently interpreted as proportions, but let's transform them into percentages.
+
+Create a new column in `country_grades` called `num_pct` that multiplies the existing values by 100.
+
+```{r}
+country_grades <- country_grades %>% 
+  mutate(num_pct = avg_num * 100)
+```
+
+#### Question 6
+
+Finally, create a line graph where the highest grade attained is on the x-axis, your `num_pct` numeracy proportion is on the y-axis, and there is one line separately colored for each country. Feel free to consult [Notebook #3](https://colab.research.google.com/drive/11PqVncdckruVj7XOIuhnogMbGtR9jhej?authuser=1#scrollTo=Csp-4ySOrQJP) from the Summer Assignment if you forgot how to set different colors based on values in your dataset.
+
+When your values look right, finish your plot by improving its visual characteristics. At least, please add labels, a title, a caption, and a theme.
+
+```{r}
+country_grades %>% 
+  ggplot(aes(x = highest_grade, y = num_pct, color = country)) + 
+    geom_line() + 
+    theme_minimal() +
+    labs(x = 'Highest Grade Attained',
+         y = 'Average Numeracy',
+         title = 'Numeracy Attained by Grade Level and Country',
+         caption = 'MICS Data')
+    
+```

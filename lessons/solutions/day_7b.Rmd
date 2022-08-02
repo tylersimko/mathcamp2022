@@ -1,0 +1,128 @@
+---
+title: 'MPA/ID Math Camp 2022: Day #7 Part 2'
+date: '2022-08-22'
+output:
+  pdf_document: default
+  html_document: default
+---
+
+### Goals:
+
+1.  Gain additional practice [**reading and manipulating datasets**]{.underline} in different formats (`read_xls()` , etc.).
+2.  Practice [**creating tables**]{.underline} in R with `gt`.
+
+### **Studying Forcibly Displaced Populations (1964-2008)**
+
+For the rest of today, we will be using data from the **U.S. Committee for Refugees and Immigrants (USCRI)** on refugees and internally displaced persons. You can find more information about the dataset [here](https://www.systemicpeace.org/inscrdata.html).
+
+#### Question 1
+
+In the console, install the `readxl` (for reading Excel files in R) and `gt` (for creating tables) packages. Remember not to put the `install.packages()` code in the .Rmd file so that it doesn't run every time you run the file, and instead install the packages from the console.
+
+Then, load the `readxl`, `gt`, and `tidyverse` packages and read the `FDP2008a.xls` into an object called `fdp` using the `read_xls()` function.
+
+```{r}
+library(gt)
+library(readxl)
+library(tidyverse)
+
+fdp <- read_xls("data/fdp.xls")
+```
+
+#### Question 2
+
+Open the original [Center for Systemic Peace website](https://www.systemicpeace.org/inscrdata.html) where we downloaded this data. We are using the "**Forcibly Displaced Populations, 1964-2008"** , and please open the Codebook (PDF) with a link on the right hand side. The codebook describes how the dataset codes missing values.
+
+Once you find that, recode the `refugee` column of the dataset such that missing values are designated by `NA`. Demonstrate that your recode was successful.
+
+```{r}
+fdp <- fdp %>% 
+  mutate(refugees = ifelse(refugees == 999, NA, refugees))
+
+table(fdp$refugees == 999)
+```
+
+#### Creating Tables in R
+
+#### The `%in%` operator
+
+First, let's practice a useful `R` operator called `%in%`. So far we have used `==` to check whether something is equal to a single value, but what if we want to check equality with multiple values? For example, to check if a country name is equal to "United States" or "Mexico":
+
+One option is to continue adding multiple conditions:
+
+```{r}
+fdp %>% 
+  filter(country == "United States" | country == "Mexico")
+```
+
+This works fine, but you can imagine code can get very long if you want to check whether a country is equal to one of 5 or 10 possibilities.
+
+Instead, the `%in%` operator returns `TRUE` if the value on the left appears anywhere "in" a [**vector**]{.underline} on the right. For example:
+
+```{r}
+new_country <- "Australia"
+
+new_country %in% c("United States", "Mexico")
+```
+
+This is very useful when you want to `filter()` a dataset to only those that have equal to one of the options in a vector.
+
+For example, let's filter our dataset down to only observations from a country in the [G7](https://en.wikipedia.org/wiki/Group_of_Seven) in the year 2008:
+
+```{r}
+g7 <- c("United States", "United Kingdom", "Canada", 
+        "France", "Italy", "Germany", "Japan")
+
+fdp %>% 
+  filter(country %in% g7)
+```
+
+#### The `gt()` function
+
+One powerful way of making tables in `R` is the `gt()` function from the `gt` package we installed earlier. To make a basic table, we can simply pipe (`%>%`) an existing dataset into the `gt()` function.
+
+Let's make a table of the number of refugees hosted in each G7 count in the year 2008. First, let's prepare our table values:
+
+```{r}
+(g7_host <- fdp %>% 
+  filter(country %in% g7) %>% 
+  filter(year == 2008) %>% 
+  select(country, host))
+```
+
+Then, let's make a table with `gt()`:
+
+```{r}
+g7_host %>% 
+  gt()
+```
+
+Nice! Let's arrange the countries in order of `host` before making a table:
+
+```{r}
+g7_host %>% 
+  arrange(desc(host)) %>% 
+  gt() %>% 
+  tab_header(
+    title = "G7: Number of Refugees Hosted in 2008",
+    subtitle = "Refugees Counted in 1000s"
+  )
+```
+
+#### Question 3
+
+A very important programming skill is the ability to use documentation and online examples to improve your code. [Here is the official tutorial](https://gt.rstudio.com/articles/intro-creating-gt-tables.html) for using the `gt` library.
+
+Using that link, find the way to add a title and subtitle to the table (**Hint**: `tab_header()` may be useful).
+
+Add an appropriate title and subtitle to the title. **Note:** the USCRI data reports refugees in terms of thousands (e.g. so a value of 1 represents 1000). You don't need to correct the values in your data, but add this information to your subtitle.
+
+```{r}
+g7_host %>% 
+  arrange(desc(host)) %>% 
+  gt() %>% 
+  tab_header(
+    title = "G7: Number of Refugees Hosted in 2008",
+    subtitle = "Refugees Counted in 1000s"
+  )
+```

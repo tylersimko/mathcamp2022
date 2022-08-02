@@ -15,11 +15,13 @@ date: '2022-08-16'
 
 ## International Education Development
 
-Today, we are going to explore data on international education levels. Our source will be data from the **Unicef Multiple Indicator Cluster Surveys** (MICS), a source of internationally comparable surveys on children and women conducted in over 115 countries. A core use of MICS data is to measure progress towards the UN's [Sustainable Development Goals](https://www.unicef.org/sdgs), with more information available here. The MICS data is also regularly used for academic and policy work, including [this recent paper](https://riseprogramme.org/publications/evaluating-systems-three-approaches-analyzing-education-systems-and-informing-action) by two MPA/ID alums! We thank Marla Spivack and Jason Silberstein for sharing their cleaned data with all of us. You can read more about the data source at the Unicef website [here](https://mics.unicef.org/about), or even look through the codebook for the MICS data [here](https://mics.unicef.org/files?job=W1siZiIsIjIwMjAvMDUvMTIvMTgvMjUvNDUvNzAxLzIwXzA1XzA4X01JQ1NfR3VpZGVib29rX2NvbXByZXNzZWQucGRmIl1d&sha=6d386818d588d05c).
+Today, we are going to explore data on international education levels. Our source will be data from the **Unicef Multiple Indicator Cluster Surveys** (MICS), a source of internationally comparable surveys on children and women conducted in over 115 countries. A core use of MICS data is to measure progress towards the UN's [Sustainable Development Goals](https://www.unicef.org/sdgs). The MICS data is also regularly used for academic and policy work, including [this recent paper](https://riseprogramme.org/publications/evaluating-systems-three-approaches-analyzing-education-systems-and-informing-action) by two MPA/ID alums! We thank Marla Spivack and Jason Silberstein for sharing their cleaned data with all of us. You can read more about the data source at the Unicef website [here](https://mics.unicef.org/about), or even look through the codebook for the MICS data [here](https://mics.unicef.org/files?job=W1siZiIsIjIwMjAvMDUvMTIvMTgvMjUvNDUvNzAxLzIwXzA1XzA4X01JQ1NfR3VpZGVib29rX2NvbXByZXNzZWQucGRmIl1d&sha=6d386818d588d05c).
 
 #### Question 1
 
-First, load the `tidyverse` library and read the dataset, called "misc6.csv" in the `data` folder. Assign this data to an object with a name of your choice. The MICS data is a survey administered to children living in each country, so the rows in this dataset are individuals living in that country. Of course, these rows are not exhaustive of every child living in the country, but they are the "sample" of respondents. We will learn much more about sampling in API-209.
+First, load the `tidyverse` library and read the dataset, called "misc6.csv" in the `data` folder with `read_csv()` (since the data is already downloaded, we recommend typing `read_csv("` and then pressing the "tab" key, RStudio will autocomplete the names of files in the folder where this file is saved).
+
+Assign this data to an object with a name of your choice. The MICS data is a survey administered to children living in each country, so each row in the dataset is a child living in that country. These rows are not exhaustive of every child living in the country, but they are the "sample" of respondents. We will learn much more about sampling in API-209.
 
 In the RStudio console (not the .Rmd file), use the `View()` function to look around the dataset. `View()` is an extremely useful function for looking at data. However, in general we suggest **not** putting `View()` directly in your .Rmd file, because R will try to open a window to visualize the dataset every time you knit the file.
 
@@ -31,7 +33,7 @@ df <- read_csv("data/mics6.csv")
 
 #### Question 2
 
-We are working with a subset of the MICS data from a few randomly selected countries. How many different countries are in the `country` column? Remember, when not using a tidyverse "pipe" (`%>%`), you can access the values in a particular column from a dataset called `df` with `df$country`.
+We are working with a subset of the MICS data from a few randomly selected countries. How many unique countries are in the `country` column? Remember, when not using a tidyverse "pipe" (`%>%`), you can access the values in a particular column from a dataset called `df` with `df$country`.
 
 **Hint**: like with most programming tasks, there are many possible ways to do this. Feel free to be creative and / or come up with multiple answers.
 
@@ -77,7 +79,7 @@ df %>%
 
 #### Question 5
 
-Using `group_by()` and `summarise()` together, calculate the average `numeracy` in each country from the MICS dataset. For a reminder on how these functions work, feel free to consult Notebook #4 from the [Summer Assignment](https://colab.research.google.com/drive/17AHZZiT2VSMPmJNIM1TaCb08R9iqkAgq?authuser=1#scrollTo=4OIE4FE4ZYwb), use Google, or ask a group member / teaching staff.
+Using functions with the `%>%`, calculate the average `numeracy` in each country from the MICS dataset. For a reminder on how these functions work, feel free to consult Notebook #4 from the [Summer Assignment](https://colab.research.google.com/drive/17AHZZiT2VSMPmJNIM1TaCb08R9iqkAgq?authuser=1#scrollTo=4OIE4FE4ZYwb), use Google, or ask a group member / teaching staff.
 
 ```{r}
 df %>% 

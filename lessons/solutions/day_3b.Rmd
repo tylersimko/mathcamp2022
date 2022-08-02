@@ -1,0 +1,114 @@
+---
+title: 'MPA/ID Math Camp 2022: Day #3 Part 2'
+output: html_document
+date: '2022-08-15'
+---
+
+### Goals:
+
+1.  Install **RMarkdown** and necessary **R Packages** for Math Camp and API-209.
+2.  Get more comfortable working with **RStudio** and working with R tools.
+
+#### Installing RMarkdown
+
+RMarkdown is a tool that will allow you to create high quality documents all within RStudio like reports, presentations, dashboard, etc. Many data scientists and academics use RMarkdown extensively for writing journal articles, analysis reports, professional presentations, and more. There are many built-in conveniences in RMarkdown, such as the ability to live update figures and tables, and have all of your writing, analysis, references, and results all in one document without having to paste back and forth between several programs. You can learn more about RMarkdown [here](https://rmarkdown.rstudio.com/), and we will be using it a lot this semester.
+
+Once you have opened this document in **RStudio**, please run the following code chunks one by one in order. Please let us know if you have any problems installing one step and do not continue until the following step is done. If the line runs successfully, you only need to run each chunk **once** (e.g. after something runs successfully, you do not need to run that chunk again).
+
+```{r, eval=FALSE}
+install.packages("rmarkdown", dependencies = TRUE)
+```
+
+```{r, eval=FALSE}
+install.packages('tinytex')
+```
+
+```{r, eval=FALSE}
+tinytex::install_tinytex()
+```
+
+#### How to check RMarkdown was installed successfully
+
+If you do not notice any errors after running each of the three lines above, perform the following steps to confirm your RMarkdown installation was successful. This is the process of creating and compiling (called "knitting" in R) a new Rmarkdown document, something we will do many times this semester!
+
+1.  Go to File -\> New File -\> RMarkdown.
+
+2.  Provide any Title, Author, and Date you wish.
+
+3.  Click "PDF" as the default output option.
+
+4.  Once the document loads, save it somewhere on your computer (with File ---\> Save or CTRL+S on PC, CMD+S on Mac).
+
+5.  Click the **Knit** button (with a tiny ball of yarn and needle icon). This will attempt to create a Markdown document. There is a bunch of placeholder material in a default Markdown document, which you should see on the new PDF.
+
+If a new PDF document window opens, congratulations! Your RMarkdown installation was successful. Welcome to a new extremely helpful tool that you will use often in Math Camp and API-209.
+
+#### Installing R Packages
+
+Now, we will install a list of packages that we will use this semester. Again, please run one chunk at a time and only continue if you do not notice any errors.
+
+After each installation line, we will call a `library()` function, which attempts to load the package. If you notice an error, the previous installation was not successful. If the package loads successfully (there may be a message that prints when the package loads, but hopefully no errors), the installation was successful.
+
+#### tidyverse
+
+The [**tidyverse**](https://www.tidyverse.org/)is an extremely useful set of packages to improve the R experience. tidyverse will give you access to a number of tools we used on the summer assignment, such as the `%>%` "pipe" operator, `ggplot2`, and the `dplyr` functions we used extensively (`mutate()`, `filter()`, etc).
+
+```{r, eval=FALSE}
+install.packages("tidyverse", dependencies = TRUE)
+```
+
+```{r, eval=FALSE}
+library(tidyverse)
+```
+
+#### ggthemes
+
+[**ggthemes**](https://yutannihilation.github.io/allYourFigureAreBelongToUs/ggthemes/) will give you access to a new list of built-in plot themes to improve your visualizations.
+
+```{r, eval=FALSE}
+install.packages("ggthemes")
+```
+
+```{r, eval=FALSE}
+library(ggthemes)
+```
+
+#### sf
+
+The [**sf**](https://r-spatial.github.io/sf/)package will install R tools for creating maps and functions for dealing with geographic data. We will also install the **rnaturalearth** and **rnaturalearthdata** packages, which provide some helpful built-in datasets (e.g. countries in the world, continent boundaries, locations of major cities, etc.) that we will use for various analyses.
+
+```{r, eval=FALSE}
+install.packages("sf", dependencies = TRUE)
+```
+
+```{r, eval=FALSE}
+library(sf)
+```
+
+```{r, eval=FALSE}
+install.packages("rnaturalearth")
+```
+
+```{r, eval=FALSE}
+library(rnaturalearth)
+```
+
+```{r, eval=FALSE}
+install.packages("rnaturalearthdata")
+```
+
+```{r, eval=FALSE}
+library(rnaturalearthdata)
+```
+
+**gt**
+
+The [**gt**](https://gt.rstudio.com/) package provides built-in functions for making professional tables in R.
+
+```{r, eval=FALSE}
+install.packages("gt", dependencies = TRUE)
+```
+
+```{r, eval=FALSE}
+library(gt)
+```
