@@ -22,10 +22,7 @@ Today, we will continue working on recreating the plot from The Economist in [th
 Now that we have already performed most of the necessary data manipulation to create this visualization, let's pick up where we left off last time. Please load the `tidyverse` library and use the `readRDS()` function to read the two datasets you stored from last time - `econ_sum.rds` and `total.rds`.
 
 ```{r}
-library(tidyverse)
 
-econ_sum <- readRDS("data/econ_sum.rds")
-total <- readRDS("data/total.rds")
 ```
 
 ### Question 2
@@ -33,9 +30,7 @@ total <- readRDS("data/total.rds")
 Finally, find the unique values of `region` in your `econ_sum` dataset and remove rows with the one region that does not appear in the plot above (**Hint**: don't forget `!=`). Then, use the `as.factor()` function on region to mutate that column into a factor class.
 
 ```{r}
-econ_sum <- econ_sum %>% 
-  filter(region != "Others") %>% 
-  mutate(region = as.factor(region))
+
 ```
 
 ### Question 3
@@ -43,13 +38,7 @@ econ_sum <- econ_sum %>%
 The Economist plot uses a new geom we have not used before, `geom_area()`. But it uses the same syntax as all of our geometries. Create a simple `ggplot()` with `econ_sum` using `iyear` as your x-aesthetic, `deaths` as your y, and `fill` by region. Also try to replicate the labels in the final plot (title, subtitle, and caption).
 
 ```{r}
-ggplot(econ_sum, aes(iyear, deaths, fill = region)) +
-  geom_area(color = "white") +
-  labs(title = "Global deaths from terrorism",
-       subtitle = "'000",
-       caption = "Source: START, IEP",
-       x = NULL,
-       y = NULL)
+
 ```
 
 ### Question 4
@@ -61,16 +50,7 @@ Once you've gotten this working, try changing the order of your now two calls to
 Once you are happy with your plot, save the whole thing to an object called `p`. Yes, you can save `ggplot()` plots as objects!
 
 ```{r}
-p <- ggplot(econ_sum, aes(iyear, deaths, fill = region)) +
-  geom_area(data = total) +
-  geom_area(color = "white") +
-  labs(title = "Global deaths from terrorism",
-       subtitle = "'000",
-       caption = "Source: START, IEP",
-       x = NULL,
-       y = NULL)
 
-p
 ```
 
 ### Question 5
@@ -86,8 +66,7 @@ Colors in large publications like The Economist are generally set by a design te
 **Hint**: Just like before, you can add additional options to your `ggplot` with `+`. Since you've already created a plot object `p`, you can do this by simply putting `p + scale_fill_manual(values = your_vector)`.
 
 ```{r}
-p + 
-  scale_fill_manual(values = c("#7b2713","#eb9e84","#00a4dc","#f15a40","#00526d"))
+
 ```
 
 ### Optional: Question 6

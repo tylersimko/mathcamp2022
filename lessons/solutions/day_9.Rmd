@@ -1,146 +1,116 @@
 ---
-title: 'MPA/ID Math Camp 2022: Day #9'
+title: 'MPA/ID Math Camp 2022: Day #11'
+author: "Tyler Simko"
+date: '2022-08-29'
 output: pdf_document
-date: '2022-08-24'
 ---
 
 ### Goals:
 
-1.  Reading data in different formats (today `.dta`).
-2.  Practice using `group_by()` to count the number of values in several categories.
-3.  Data visualization with `ggplot2`.
-4.  More practice [**creating and customizing tables**]{.underline} in R with `gt`.
+1.  Fulfill Math Camp Project Promise #1 by recreating a real plot from The Economist.
+2.  Practice advanced data visualization with `ggplot2`.
+3.  Dive into advanced visualization options with `scale()` functions.
 
-### Political Institutions
+### Math Camp Project Promise #1b: The Economist Visualization
 
-Today we will be working with The [Database of Political Institutions 2020](https://www.iadb.org/en/research-and-data/dpi2020) (DPI2020). In their own words, DPI "presents institutional and electoral results data such as measures of checks and balances, tenure and stability of the government, identification of party affiliation and ideology, and fragmentation of opposition and government parties in the legislature. The current version of the database expands its coverage to about 180 countries for 45 years, 1975-2020. It has become one of the most cited databases in comparative political economy and comparative political institutions, with more than 4,500 article citations on Google Scholar as of December 2020."
+Today, we will continue working on recreating the plot from The Economist in [this article](https://www.economist.com/graphic-detail/2015/11/18/the-plague-of-global-terrorism) that we promised at the beginning of Math Camp. This exercise is adapted from a wonderful tutorial by [Tanesya Tresna](https://rpubs.com/tangerine/economist-plot).
 
-#### Question 1
+![](data/econ_picture.png)
 
-Load the `foreign` package (if there is an error when loading it, you may need to install it) along with `tidyverse` and `gt`. Then, read the `DPI2020.dta` file into an object called `dpi` using the `read.dta()` function.
+### Question 1
 
-Then, count the number of observations with each value of the `system` variable, which represents types of Executive governing systems (e.g. elected representative, etc.). Although you can use syntax like `table(dataset$column)` to do this, there is a built-in way `tidyverse` way to count observations that will keep your data in a format that allows you to easily pass it into a `gt` table. Try `group_by()` on the `system` variable followed by the `count()` function (with no argument).
-
-**Note**: using `group_by(a_column) %>%` `count()` is equivalent to `group_by(a_column) %>% summarise(n = n())` . `n()` is a special function that, when used inside a `dplyr` verb, will count the number of appropriate rows.
+Now that we have already performed most of the necessary data manipulation to create this visualization, let's pick up where we left off last time. Please load the `tidyverse` library and use the `readRDS()` function to read the two datasets you stored from last time - `econ_sum.rds` and `total.rds`.
 
 ```{r}
 library(tidyverse)
-library(foreign)
-library(gt)
 
-dpi <- read.dta("data/DPI2020.dta")
-
-dpi %>% 
-  group_by(system) %>% 
-  count()
-
-# equivalent to
-dpi %>% 
-  group_by(system) %>% 
-  summarise(n = n())
+econ_sum <- readRDS("data/econ_sum.rds")
+total <- readRDS("data/total.rds")
 ```
 
-#### Question 2
+### Question 2
 
-Open the codebook `DPI2020_codebook.pdf`, that we have downloaded from the website for you, and find the definition for the `system` variable on page three. Recode the `-999` values to be `NA`, and then filter out all `NA` values from the dataset.
-
-**Hint**: remember the [Capstone Assignment](https://colab.research.google.com/drive/16Yw7bmTLxE3_lEEztBFJfCB0UM6xM-5T?authuser=1) Problem 4, Question 2. `is.na()` will return a boolean value (i.e. `TRUE` or `FALSE` for each row). Combining that with `filter()` would return *only* `NA` values, but here you want only non-NA values. Using the `!` ("not") operator will reverse a `TRUE` or `FALSE` value. So, `filter(!is.na(column_name))` might be a helpful place to start....
+Finally, find the unique values of `region` in your `econ_sum` dataset and remove rows with the one region that does not appear in the plot above (**Hint**: don't forget `!=`). Then, use the `as.factor()` function on region to mutate that column into a factor class.
 
 ```{r}
-dpi <- dpi %>% 
-  mutate(system = ifelse(system == -999, NA, system)) %>% 
-  filter(!is.na(system))
+econ_sum <- econ_sum %>% 
+  filter(region != "Others") %>% 
+  mutate(region = as.factor(region))
 ```
 
-#### Question 3
+### Question 3
 
-You may have noticed the `system` column has integer values -- `0`, `1`, and `2`. Those are helpful when working with the raw data, but would not look very nice on a table. Let's recode the values to more helpful phrases describing what the values represent.
-
-So far (like in the previous question), we have used the `ifelse()` function to code a single value at a time. For example, `if` system was equal to `-999`, then recode it to `NA`, otherwise leave it. alone.
-
-What should we do if we have multiple values we want to recode? This is what the `case_when()` function is for. For example, run this code below as an example:
+The Economist plot uses a new geom we have not used before, `geom_area()`. But it uses the same syntax as all of our geometries. Create a simple `ggplot()` with `econ_sum` using `iyear` as your x-aesthetic, `deaths` as your y, and `fill` by region. Also try to replicate the labels in the final plot (title, subtitle, and caption).
 
 ```{r}
-grades <- tibble(student = c("Dan", "Marco", "Tyler", "No Name"),
-                 final = c(91, 97, 84, 0))
-
-grades %>% 
-  # The final > 93 is a TRUE / FALSE evaluation, then
-  # ~ "A" is the value to set your column to IF the condition final > 93 is TRUE.
-  mutate(final = case_when(final > 93 ~ "A",
-                           final > 90 ~ "A-",
-                           final > 83 ~ "B+",
-                           final == 0 ~ "Missing"))
+ggplot(econ_sum, aes(iyear, deaths, fill = region)) +
+  geom_area(color = "white") +
+  labs(title = "Global deaths from terrorism",
+       subtitle = "'000",
+       caption = "Source: START, IEP",
+       x = NULL,
+       y = NULL)
 ```
 
-There are many more examples of the `case_when()` function in the documentation (run `?case_when` in the console) or online at [websites like this](https://www.statology.org/dplyr-case_when/).
+### Question 4
 
-#### Question 3
+One very useful ability of `ggplot()` that we have not used yet is the ability to simultaneously [plot data from multiple datasets.]{.underline} Let's try that here. Copy your code from the previous question. After your first `ggplot()` line, but before your existing `geom_area()`, add another call to `geom_area()` that uses the `data` argument and sets it equal to `total`.
 
-In the codebook, find the description of the `system` variable (pg. 3) where the values of `0`, `1`, and `2` are defined. Use `case_when()` to recode the `system` variable, turning these integers into character strings given what type off system they represent.
+Once you've gotten this working, try changing the order of your now two calls to `geom_area()`. What do you notice?
 
-Once the answer looks good to you, save it to overwrite the `dpi` object. Then, use the `group_by()` and `count()` syntax or `group_by()` with `summarise(n = n())` above to verify that your recode was successful.
+Once you are happy with your plot, save the whole thing to an object called `p`. Yes, you can save `ggplot()` plots as objects!
 
 ```{r}
-dpi <- dpi %>% 
-  mutate(system = case_when(system == 2 ~ "Parliamentary",
-                            system == 1 ~ "Assembly-elected President",
-                            system == 0 ~ "Presidential"))
+p <- ggplot(econ_sum, aes(iyear, deaths, fill = region)) +
+  geom_area(data = total) +
+  geom_area(color = "white") +
+  labs(title = "Global deaths from terrorism",
+       subtitle = "'000",
+       caption = "Source: START, IEP",
+       x = NULL,
+       y = NULL)
 
-dpi %>% 
-  group_by(system) %>% 
-  count()
+p
 ```
 
-#### Question 4
+### Question 5
 
-Using `gt()` and the [documentation we have referenced before](https://gt.rstudio.com/articles/intro-creating-gt-tables.html), use `gt()` to create a nicely formatted table of the **number of countries using each executive governing system only in the year 2020**. Try `cols_label()` to set good column names.
+One enormous strength of `ggplot()` is that figures are near infinitely customizable. While making plots, `ggplot()` will often choose sensible defaults for you (on things like font sizes, the values that appear on your axes, legend titles, etc.), but you have the ability to overwrite nearly any aspect of a plot you create. During the course of the semester, we will learn many of these options. Two powerful sources of customization come from the series of `scale()` functions and the `theme()` functions.
+
+Every source of aesthetic information on your plot (e.g. color, size, axes, etc.) is controlled by what `ggplot()` refers to as a "scale." There are individual functions for controlling each scale (to see just how many, go to your Console and search the documentation for all functions that start with `scale_` in the `ggplot2` package by running `??ggplot2::scale_`).
+
+Despite their incredible number, thankfully scale functions can be quite intuitive. For example, because we used `fill = region` in our code above, we can manually edit the colors set by fill with the `scale_fill_manual()` function. This function, appropriately named, allows us to manually specify colors to the fill "scale" instead of the default `ggplot2` colors.
+
+Colors in large publications like The Economist are generally set by a design team that create design guidelines. For example, [here](https://design-system.economist.com/foundations/principles/design-principles#our-principles) is the official design principles document for The Economist. In our case, there are 5 colors set by fill on the plot (one for each region). These colors are Hex codes like we've previously learned, and are `"#7b2713"`, `"#eb9e84"`, `"#00a4dc"`, `"#f15a40"`, and `"#00526d"`. To put these on our plot, create a vector with `c()` that has these five Hex codes as values, and pass it to the `values` argument of `scale_fill_manual()`.
+
+**Hint**: Just like before, you can add additional options to your `ggplot` with `+`. Since you've already created a plot object `p`, you can do this by simply putting `p + scale_fill_manual(values = your_vector)`.
 
 ```{r}
-dpi %>% 
-  filter(year == 2020) %>% 
-  group_by(system) %>% 
-  summarise(n = n()) %>%
-  arrange(desc(n)) %>% 
-  gt() %>% 
-  tab_header(
-    title = md("**International Executive Governing Systems by Type**"),
-    subtitle = md("DPI 2020")
-  ) %>% 
-  cols_label(system = md("**System**"),
-             n = md("**Count in 2020**"))
-
+p + 
+  scale_fill_manual(values = c("#7b2713","#eb9e84","#00a4dc","#f15a40","#00526d"))
 ```
 
-#### Question 5
+### Optional: Question 6
 
-Finally, count the frequency of each `system` value for all years in our dataset (e.g. the rows in your dataset should be a year-system pair --- 1975 Parliamentary, 1975 Presidential, etc.). Then, design a plot to visualize these results with a separate colored sgeometry for each `system`. We recommend a `geom_line()` or `geom_col` to start.
-
-```{r}
-dpi %>% 
-  group_by(year, system) %>% 
-  summarise(n = n()) %>% 
-  ggplot(aes(x = year, y = n, color = system)) + 
-    geom_line() + 
-    labs(title = "Executive Governing Systems by Year",
-         caption = "DPI 2020 Data") + 
-    theme_minimal()
-```
-
-#### Challenge Problem
-
-Edit your plot above to use three custom colors [using hex codes](https://htmlcolorcodes.com/). However, now this is trickier because you have multiple colors in your plot (one for each `system` instead of just a single color).
-
-`scale` functions are designed for this problem. Using [this tutorial](http://www.sthda.com/english/wiki/ggplot2-colors-how-to-change-colors-automatically-and-manually) for `scale` functions, try to set three custom hex code values of your choice for your plot above.
+We will learn many other customization options throughout the course of the semester. You will learn these in time, so please do not be overwhelmed by the many, many customization options available to you through `ggplot2`. We encourage you to read function documentation or even the official `ggplot2` according to your time and interest, though this is not required and fully optional. To finish the specific customization code used in this plot, you can run the following code below. Try reading through it to understand what is going on, though more of this will make sense during the course of the semester!
 
 ```{r}
-dpi %>% 
-  group_by(year, system) %>% 
-  summarise(n = n()) %>% 
-  ggplot(aes(x = year, y = n, color = system)) + 
-    geom_line() + 
-    labs(title = "Executive Governing Systems by Year",
-         caption = "DPI 2020 Data") + 
-    theme_minimal() + 
-    scale_color_manual(values = c("#999999", "#E69F00", "#56B4E9"))
+p + scale_fill_manual(values = c("#7b2713","#eb9e84","#00a4dc","#f15a40","#00526d")) + 
+  scale_x_continuous(breaks = seq(2000, 2014),
+                     labels = c(2000, paste0(0, seq(1,9)), seq(10,14)))+
+  scale_y_continuous(position = "right",
+                     breaks = seq(0,125,125/7),
+                     labels = paste(seq(0,35,5))) + 
+  theme(aspect.ratio = 3.2/7,
+        panel.background = element_rect(fill = "white"),
+        panel.grid.major.x = element_blank(),
+        panel.grid.major.y = element_line(color = "darkgrey"),
+        legend.text = element_text(margin = margin(l=3), size = 10),
+        legend.title = element_blank(),
+        legend.position = c(0.16,0.7),
+        axis.text = element_text(size = rel(1), color = "gray8"),
+        axis.line.x  = element_line(color = "gray8"),
+        axis.ticks.y = element_blank(),
+        plot.title = element_text(size = rel(1.5), hjust = 0, face = "bold"),
+        plot.caption = element_text(hjust = 0, size = 9))
 ```
