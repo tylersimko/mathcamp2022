@@ -17,9 +17,9 @@ For the rest of today, we will be using data from the **U.S. Committee for Refug
 
 #### Question 1
 
-In the console, install the `readxl` (for reading Excel files in R) and `gt` (for creating tables) packages. Remember not to put the `install.packages()` code in the .Rmd file so that it doesn't run every time you run the file, and instead install the packages from the console.
+Load `tidyverse`, `readxl` (for reading Excel files in R) and `gt` (for creating tables) packages. If you installed these in the Day 3 file, you are good to go. If you get an error, you can install with `install.packages()` -- remember not put the `install.packages()` code in the console, not the .Rmd file, so that it doesn't run every time you run the file, and instead install the packages from the console.
 
-Then, load the `readxl`, `gt`, and `tidyverse` packages and read the `FDP2008a.xls` into an object called `fdp` using the `read_xls()` function.
+Read the `FDP2008a.xls` dataset into an object called `fdp` using the `read_xls()` function.
 
 ```{r}
 library(gt)
@@ -33,7 +33,7 @@ fdp <- read_xls("data/fdp.xls")
 
 Open the original [Center for Systemic Peace website](https://www.systemicpeace.org/inscrdata.html) where we downloaded this data. We are using the "**Forcibly Displaced Populations, 1964-2008"** , and please open the Codebook (PDF) with a link on the right hand side. The codebook describes how the dataset codes missing values.
 
-Once you find that, recode the `refugee` column of the dataset such that missing values are designated by `NA`. Demonstrate that your recode was successful.
+Once you find that, recode the `refugee` column of the dataset such that missing values are designated by `NA` and not how they are currently coded. Demonstrate that your recode was successful.
 
 ```{r}
 fdp <- fdp %>% 
@@ -46,7 +46,7 @@ table(fdp$refugees == 999)
 
 #### The `%in%` operator
 
-First, let's practice a useful `R` operator called `%in%`. So far we have used `==` to check whether something is equal to a single value, but what if we want to check equality with multiple values? For example, to check if a country name is equal to "United States" or "Mexico":
+First, let's practice a useful `R` operator called `%in%`. So far we have used `==` to check whether something is equal to a single value, but what if we want to check equality with multiple values? For example, to check if a country name is equal to "United States" **or** "Mexico."
 
 One option is to continue adding multiple conditions:
 

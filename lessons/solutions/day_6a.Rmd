@@ -69,7 +69,10 @@ The line below will read a subset of the `MICS` data used last week with three c
 ```{r}
 mics <- read_csv("https://www.dropbox.com/s/bhenqxcdcklwvgg/mics6_sub.csv?dl=1")
 
-# Answer here
+cities <- tibble(country = c("Ghana", "Mongolia", "Nepal"),
+       capital = c("Accra", "Ulaanbaatar", "Kathmandu"))
+
+full_join(mics, cities, by = "country")
 ```
 
 ### Merging with Imperfect Overlap Between Datasets
@@ -130,6 +133,21 @@ conts <- tibble(country = c("Egypt", "Ghana",
 df <- left_join(mics, conts, by = "country")
 
 table(df$country, df$continent)
+
+df %>% 
+  group_by(country) %>% 
+  summarise(unique(continent))
+```
+
+#### Question 4
+
+Make a histogram that shows the number of children in each value of `highest_grade` on a separate facet for the two continents we merged in. Fill the histogram with a HEX color of your choice ([this](https://htmlcolorcodes.com/) is a good site) and set a `binwidth` of 0.5.
+
+```{r}
+df %>% 
+  ggplot(aes(x = highest_grade)) + 
+    geom_histogram(fill = "#854095", binwidth = 0.5) + 
+    facet_wrap(~continent)
 ```
 
 #### Challenge Problem
