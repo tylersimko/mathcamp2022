@@ -1,0 +1,88 @@
+---
+title: 'MPA/ID Math Camp 2022: Day #13'
+output: pdf_document
+date: '2022-09-02'
+---
+
+### Goals:
+
+1.  Fulfill Math Camp Project Promise #3 by creating our own maps of the world.
+2.  Practice advanced data visualization with `ggplot2` and introducing `geom_sf()`.
+3.  Reflect on all you've learned so far!
+
+### Question 1
+
+First, please load the `tidyverse`, `sf`, `rnaturalearth`, and `rnaturalearthdata` packages. These should already be installed from earlier in Math Camp. Then, please run the `ne_countries()` function, which will return a dataset containing information (including geographic data which will allow us to make maps) on countries in the world. Assign the result to an object called `world`. Set the `scale` argument to `"medium"` (this will give a mid-level resolution) and the `returnclass` argument to `"sf"` (this will return data in a geographic class!).
+
+```{r}
+library(tidyverse)
+library(sf)
+library(rnaturalearth)
+library(ggthemes)
+library(rnaturalearthdata)
+
+world <- ne_countries(scale = "medium", returnclass = "sf")
+```
+
+### Question 2
+
+Please look around the `world` object and investigate its contents. You will see a lot of familiar data types, along with one unfamiliar one -- the `geometry` column contains a new class of data that contains geographic information. Take a look at that column by running `world$geometry` (to view values from one column) in the console.
+
+Once you've done that, let's try making a simple plot. Thankfully, `ggplot()` already knows how to handle geographic data because we have loaded the `sf()` package. Create a `ggplot()` using the `world` object and use the `geom_sf()` function (with no arguments) to create a world map.
+
+```{r}
+ggplot(world) + 
+  geom_sf()
+```
+
+### Question 3
+
+Investigate the `admin` (country name) and `continent` (continent) columns. Please filter the `world` data to countries from a continent **of your choice**, and then make a map that creates a separate fill color based on values of median country income -- the `income_grp` column. Finally, load the `ggthemes` library and add `theme_map()` to your plot.
+
+```{r}
+world %>% 
+  filter(continent == "Asia") %>% 
+    ggplot(aes(fill = income_grp)) + 
+    geom_sf() + 
+    theme_map()
+```
+
+### Question 4
+
+Please load the `data/cities.rds` file, which is an adapted dataset from this [helpful R package](https://www.rdocumentation.org/packages/maps/versions/3.4.0/topics/world.cities) (you do not need to load or install the `maps` package, we have already edited the dataset for you to make this exercise more convenient). According to the documentation, "This database is primarily of world cities of population greater than about 40,000. Also included are capital cities of any population size, and many smaller towns." It is neither exhaustive nor fully up to date, but has wonderful worldwide coverage so it will work for our purposes.
+
+Please read the `cities` data with the `readRDS()` function. Then, design a plot that shows all of the capital cities in a particular continent of your choice on top of countries colored by their value of `economy`. Since your plot is designed to fill by `economy`, for your cities geom you will need to specify `fill = "black"` to plot points as a single color.
+
+**Hint**: to do this, remember you can add multiple "geoms" to the same `ggplot()`. On top of a plot similar to the one you made in the previous question, add another `geom_sf()` with the `data` argument equal to your filtered cities dataset representing the cities you want to plot.
+
+```{r}
+cities <- readRDS("data/cities.rds")
+
+world %>% 
+  filter(continent == "Africa") %>% 
+    ggplot(aes(fill = economy)) + 
+    geom_sf() + 
+    geom_sf(data = cities %>% filter(capital == 1 & continent == "Africa"), fill = "black") + 
+  ggthemes::theme_map()
+```
+
+### Question 5
+
+Building on your map from the previous question, please overwrite the default fill colors being created by `ggplot()` using the `scale_fill_manual()` function. Remember that you can choose Hex colors from a website [like this](https://htmlcolorcodes.com/) and pass them as a vector to the `values` argument.
+
+**Hint**: the number of colors you select need to be the same as the number of unique values being filled on your plot. For example, if your legend has 3 colors, you will need to pass 3 colors (no more, no less or there will be an error).
+
+```{r}
+world %>% 
+  filter(continent == "Africa") %>% 
+    ggplot(aes(fill = economy)) + 
+    geom_sf(color = "black") + 
+    geom_sf(data = cities %>% filter(capital == 1 & continent == "Africa"), 
+            fill = "#ECF0F1", color = "black", pch = 21) + 
+  ggthemes::theme_map() + 
+  scale_fill_manual(name = "Economy", 
+                    values = c("#16A085", "#D35400", "#7D3C98")) + 
+  labs(title = "Africa Countries by Economic Classification",
+       subtitle = "Capital cities shown in white") + 
+  theme(plot.title = element_text(face = "bold"))
+```
