@@ -1,0 +1,70 @@
+---
+title: 'MPA/ID Math Camp 2022: Day #8'
+output: pdf_document
+date: '2022-08-24'
+---
+
+### Goals:
+
+1.  More practice [**creating and customizing tables**]{.underline} in R with `gt`.
+2.  Practice with `dplyr` [**data manipulation functions**]{.underline} (e.g. `slice()`).
+3.  Creating your own [**functions.**]{.underline}
+4.  Data visualization with `ggplot2`.
+
+### **Studying Forcibly Displaced Populations (1964-2008)**
+
+We will continue using the **U.S. Committee for Refugees and Immigrants (USCRI)** dataon refugees and internally displaced persons from yesterday. You can find more information about the dataset [here](https://www.systemicpeace.org/inscrdata.html).
+
+#### Question 1
+
+Load the appropriate libraries and read the `fdp.xls` data into an object called `fdp`.
+
+```{r}
+
+```
+
+#### Question 2
+
+Filter the `fdp` dataset to observations in 1980, and sort (in descending order, from largest to smallest) by the number of refugees hosted in the `host` column. Finally, subset the data to only the top 10 countries.
+
+Once this looks correct to you, save the result to an object.
+
+**Hint:** Remember `slice()` from Summer Assignment [Notebook #2](https://colab.research.google.com/drive/1-Am4YUaSKWEQ8xkpGCRTrIhqQ3RMowQc?authuser=1).
+
+```{r}
+
+```
+
+#### Question 3
+
+Using `select()`, keep only the `country` and `host` columns.
+
+Then, use the remaining columns to make a table with `gt()`. Add a title and subtitle, and [use the tutorial from yesterday](https://gt.rstudio.com/articles/intro-creating-gt-tables.html) to figure out how to make the title bold.
+
+For an extra challenge, try the `cols_label()` function in the tutorial to capitalize the column names and make them bold as well.
+
+```{r}
+
+```
+
+#### Question 4
+
+For a country of your choice, filter the dataset and create a line plot showing the number of refugees hosted for every year in the dataset.
+
+**Hint**: for a cool plotting technique, try adding a `geom_point()` *after* your `geom_line()` to see what happens.
+
+```{r}
+
+```
+
+#### Question 5: Challenge
+
+Adapt your code from Question 4 into a function called `host_plot()` that takes a `country_name` argument. The function should return a plot that, like Question 4, create a line plot showing the number of refugees hosted for every year in the dataset in that country.
+
+Evaluate your function on at least two countries to demonstrate that it runs successfully.
+
+**Hint**: for a title that includes the name of the country, try `paste()`.
+
+```{r}
+
+```
