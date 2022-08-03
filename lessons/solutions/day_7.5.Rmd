@@ -1,5 +1,5 @@
 ---
-title: 'MPA/ID Math Camp 2022: Day #9'
+title: 'MPA/ID Math Camp 2022: Day #7.5 (Extra Practice)'
 output: pdf_document
 date: '2022-08-24'
 ---
