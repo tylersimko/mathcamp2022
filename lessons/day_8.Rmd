@@ -32,15 +32,7 @@ The dataset has been prepared for you as `terrorism.rds`. Load the `tidyverse` l
 Finally, create a column called `ntotal` which adds the `nkill` and `nkillter` columns together. Remember you are editing columns in a `tidyverse` tibble, so you will need to edit these three columns within a `mutate()` function.
 
 ```{r}
-library(tidyverse)
-library(scales)
 
-econ <- readRDS("data/terrorism.rds")
-
-econ <- econ %>% 
-  mutate(nkill = replace_na(nkill, 0),
-         nkillter = replace_na(nkillter,0),
-         ntotal = nkill + nkillter)
 ```
 
 ### Question 2
@@ -48,16 +40,14 @@ econ <- econ %>%
 The dataset rows are deaths from terrorist attacks in individual countries, but the plot shows aggregated deaths by year and region. Please create a new summarized dataset called `econ_sum` that adds the total number of deaths in every year and region in a summarized column called `deaths`. When doing this, divide the total sum by 1000 (although the plot does not say so very clearly, the '000 in the subtitle indicates they are counting in thousands). Finally, add the `.groups = "drop"` to your `summarise()` function to undo the `group_by()` step you used. This allows you to continue editing the dataset later without still having your data grouped for future operations.
 
 ```{r}
-econ_sum <- econ %>% 
-  group_by(iyear, region) %>% 
-  summarise(deaths = sum(ntotal) / 1000, .groups = "drop")
+
 ```
 
 ### Question 3
 
-Now, use the `rescale()` function from the `scales` package you loaded (check the documentation with `?rescale`) function to overwrite the `deaths` column to be between 0 (minimum) and 35 (maximum) **in your summarized dataset `econ_sum`** (not the original one). Because you are editing a column with `tidyverse`, remember you will need to put this inside of a `mutate()` call. Finally, confirm that your rescaling was successful by calculating the smallest and largest values in your newly rescaled `deaths` column. They should be 0 and 35.
+Now, use the `rescale()` function from the `scales` package you loaded (check the documentation with `?rescale`) to overwrite the `deaths` column to be between 0 (minimum) and 35 (maximum) **in your summarized dataset `econ_sum`** (not the original one). Because you are editing a column with `tidyverse`, remember you will need to put this inside of a `mutate()` call. Finally, confirm that your rescaling was successful by calculating the smallest and largest values in your newly rescaled `deaths` column. They should be 0 and 35.
 
-**Hint**: the `rescale()` function uses the following syntax to recale a column values between a `min` and `max` value:
+**Hint**: the `rescale()` function uses the following syntax to rescale a column values between a `min` and `max` value:
 
 ```{r, eval = FALSE}
 # rescale col_to_change to have values between min and max
@@ -66,11 +56,7 @@ df %>%
 ```
 
 ```{r}
-econ_sum <- econ_sum %>% 
-  mutate(deaths = rescale(deaths, to = c(0, 35)))
 
-min(econ_sum$deaths)
-max(econ_sum$deaths)
 ```
 
 ### Question 4
@@ -78,10 +64,7 @@ max(econ_sum$deaths)
 Notice there is a "Rest of the World" shape on the final plot, which sums all of the values in the dataset. Let's recreate that by creating a new dataset that summarizes your entire dataset to calculate the total number of deaths in every year. Like before, please call your column `deaths`. Call your dataset `total` and please again add the `.groups = "drop"` argument to your `summarise()` function to undo the grouping operation you will need to use. After summarizing, please create a new column in this summarized dataset called `region` that is equal to `"Rest of the World"` for all rows.
 
 ```{r}
-total <- econ_sum %>% 
-  group_by(iyear) %>% 
-  summarise(deaths = sum(deaths), .groups = "drop") %>% 
-  mutate(region = "Rest of the World")
+
 ```
 
 ### Question 5
@@ -95,7 +78,5 @@ saveRDS(x, "data/x.rds")
 ```
 
 ```{r}
-# Answer here
-saveRDS(econ_sum, "data/econ_sum.rds")
-saveRDS(total, "data/total.rds")
+
 ```
